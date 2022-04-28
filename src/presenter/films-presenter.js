@@ -13,8 +13,8 @@ export default class FilmsPresenter {
     for (let i = 0 ; i < 5 ; i++) {
       render(new FilmCardView(),filmsComponent);
     }
-
-    render(new ShowMoreButtonView(),filmsContainer);
+    const placeForShowMoreButton = document.querySelector('.films-list');
+    render(new ShowMoreButtonView(),placeForShowMoreButton);
 
   };
 }
