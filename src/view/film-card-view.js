@@ -20,7 +20,7 @@ const filmCardElement = () => `<article class="film-card">
   </div>
 </article>`;
 
-export default class FilmCardElement {
+export default class FilmCardView {
   getTemplate() {
     return filmCardElement();
   }

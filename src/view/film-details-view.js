@@ -114,7 +114,7 @@ const filmDetailsElement = () =>`<section class="film-details">
   </form>
 </section>`;
 
-export default class FilmDetailsElement {
+export default class FilmDetailsView {
   getTemplate() {
     return filmDetailsElement();
   }

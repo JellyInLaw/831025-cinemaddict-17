@@ -6,7 +6,7 @@ const sortElement = () =>`<ul class="sort">
     <li><a href="#" class="sort__button">Sort by rating</a></li>
   </ul>`;
 
-export default class SortElement {
+export default class SortView {
   getTemplate() {
     return sortElement();
   }
