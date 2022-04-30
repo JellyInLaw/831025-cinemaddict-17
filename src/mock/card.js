@@ -13,7 +13,7 @@ const getTitle = () => {
   return titles[getRandomInteger(0,6)];
 };
 
-const getPoster = () =>{
+const getPoster = () => {
   const posters = [
     'images/posters/made-for-each-other.png',
     'images/posters/popeye-meets-sinbad.png',
@@ -24,6 +24,39 @@ const getPoster = () =>{
     'images/posters/the-man-with-the-golden-arm.jpg'
   ];
   return posters[getRandomInteger(0,6)];
+};
+
+const getGenre = () => {
+  const genres = [
+    'Action',
+    'Comedy',
+    'Drama',
+    'Fantasy',
+    'Horror',
+    'Mystery',
+    'Romance'
+  ];
+  return genres[getRandomInteger(0,6)];
+};
+
+const getDescription = () => {
+  const blablas = [
+    'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+    'Cras aliquet varius magna, non porta ligula feugiat eget. ',
+    'Fusce tristique felis at fermentum pharetra. ',
+    'Aliquam id orci ut lectus varius viverra. ',
+    'Nullam nunc ex, convallis sed finibus eget, sollicitudin eget ante. ',
+    'Phasellus eros mauris, condimentum sed nibh vitae, sodales efficitur ipsum. ',
+    'Sed blandit, eros vel aliquam faucibus, purus ex euismod diam, eu luctus nunc ante ut dui. ',
+    'Sed sed nisi sed augue convallis suscipit in sed felis. ',
+    'Aliquam erat volutpat. Nunc fermentum tortor ac porta dapibus. ',
+    'In rutrum ac purus sit amet tempus.'];
+  return blablas[getRandomInteger(0,9)];
+};
+
+const getBoolean = () => {
+  const number = getRandomInteger(0,1);
+  return number;
 };
 
 export const generateMovie = () => ({
@@ -43,19 +76,19 @@ export const generateMovie = () => ({
       'Morgan Freeman'
     ],
     'release': {
-      'date': '2019-05-11T00:00:00.000Z',
+      'date': `${getRandomInteger(1919,2020)}-05-11T00:00:00.000Z`,
       'release_country': 'Finland'
     },
     'runtime': getRandomInteger(10,190),
     'genre': [
-      'Comedy'
+      getGenre()
     ],
-    'description': 'Oscar-winning film, a war drama about two young people, from the creators of timeless classic "Nu, Pogodi!" and "Alice in Wonderland", with the best fight scenes since Bruce Lee.'
+    'description': getDescription(),
   },
   'user_details': {
-    'watchlist': false,
-    'already_watched': true,
-    'watching_date': '2019-04-12T16:12:32.554Z',
-    'favorite': false
+    'watchlist': getBoolean(),
+    'already_watched': getBoolean(),
+    'watching_date': `${getRandomInteger(2005,2022)}-${getRandomInteger(1,31)}-12T16:12:32.554Z`,
+    'favorite': getBoolean()
   }
 });

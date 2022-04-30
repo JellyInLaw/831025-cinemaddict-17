@@ -14,7 +14,6 @@ export default class FilmsPresenter {
 
     for (let i = 0 ; i < this.cards.length ; i++) {
       render(new FilmCardView(this.cards[i]),filmsComponent);
-      console.log(this.cards[i]);
     }
     const placeForShowMoreButton = document.querySelector('.films-list');
     render(new ShowMoreButtonView(),placeForShowMoreButton);
