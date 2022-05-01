@@ -1,4 +1,5 @@
 import { getRandomInteger } from '../utils';
+import { getCommentsIds} from './comments';
 
 const getTitle = () => {
   const titles = [
@@ -61,7 +62,7 @@ const getBoolean = () => {
 
 export const generateMovie = () => ({
   'id': getRandomInteger(0,9999),
-  'comments': ['comment','comment'],
+  'comments': getCommentsIds(),
   'film_info': {
     'title': getTitle(),
     'alternative_title': getTitle(),
