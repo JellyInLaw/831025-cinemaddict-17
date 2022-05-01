@@ -1,6 +1,16 @@
 import { createElement } from '../render';
+import dayjs from 'dayjs';
 
-const filmDetailsElement = () =>`<section class="film-details">
+const getDateForPopup = (date) => dayjs(date).format('DD MMMM YYYY');
+
+const getValidRuntime = (runtime) => runtime > 60 ? `${Math.floor(runtime/60)} h ${runtime%60} m` : `${runtime} m`;
+
+const isActive = (active) =>
+  active
+    ? 'film-details__control-button--active'
+    :'';
+
+const filmDetailsElement = (film) =>`<section class="film-details">
   <form class="film-details__inner" action="" method="get">
     <div class="film-details__top-container">
       <div class="film-details__close">
@@ -8,73 +18,71 @@ const filmDetailsElement = () =>`<section class="film-details">
       </div>
       <div class="film-details__info-wrap">
         <div class="film-details__poster">
-          <img class="film-details__poster-img" src="./images/posters/the-great-flamarion.jpg" alt="">
+          <img class="film-details__poster-img" src="./${film.film_info.poster}" alt="">
 
-          <p class="film-details__age">18+</p>
+          <p class="film-details__age">${film.film_info.age_rating}+</p>
         </div>
 
         <div class="film-details__info">
           <div class="film-details__info-head">
             <div class="film-details__title-wrap">
-              <h3 class="film-details__title">The Great Flamarion</h3>
-              <p class="film-details__title-original">Original: The Great Flamarion</p>
+              <h3 class="film-details__title">${film.film_info.title}</h3>
+              <p class="film-details__title-original">${film.film_info.alternative_title}</p>
             </div>
 
             <div class="film-details__rating">
-              <p class="film-details__total-rating">8.9</p>
+              <p class="film-details__total-rating">${film.film_info.total_rating}</p>
             </div>
           </div>
 
           <table class="film-details__table">
             <tr class="film-details__row">
               <td class="film-details__term">Director</td>
-              <td class="film-details__cell">Anthony Mann</td>
+              <td class="film-details__cell">${film.film_info.director}</td>
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Writers</td>
-              <td class="film-details__cell">Anne Wigton, Heinz Herald, Richard Weil</td>
+              <td class="film-details__cell">${film.film_info.writers}</td>
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Actors</td>
-              <td class="film-details__cell">Erich von Stroheim, Mary Beth Hughes, Dan Duryea</td>
+              <td class="film-details__cell">${film.film_info.actors}</td>
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Release Date</td>
-              <td class="film-details__cell">30 March 1945</td>
+              <td class="film-details__cell">${getDateForPopup(film.film_info.release.date)}</td>
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Runtime</td>
-              <td class="film-details__cell">1h 18m</td>
+              <td class="film-details__cell">${getValidRuntime(film.film_info.runtime)}</td>
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Country</td>
-              <td class="film-details__cell">USA</td>
+              <td class="film-details__cell">${film.film_info.release.release_country}</td>
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Genres</td>
               <td class="film-details__cell">
-                <span class="film-details__genre">Drama</span>
-                <span class="film-details__genre">Film-Noir</span>
-                <span class="film-details__genre">Mystery</span></td>
+                <span class="film-details__genre">${film.film_info.genre[0]}</span>
+                <span class="film-details__genre">${film.film_info.genre[1]}</span>
+                <span class="film-details__genre">${film.film_info.genre[2]}</span></td>
             </tr>
           </table>
 
-          <p class="film-details__film-description">
-            The film opens following a murder at a cabaret in Mexico City in 1936, and then presents the events leading up to it in flashback. The Great Flamarion (Erich von Stroheim) is an arrogant, friendless, and misogynous marksman who displays his trick gunshot act in the vaudeville circuit. His show features a beautiful assistant, Connie (Mary Beth Hughes) and her drunken husband Al (Dan Duryea), Flamarion's other assistant. Flamarion falls in love with Connie, the movie's femme fatale, and is soon manipulated by her into killing her no good husband during one of their acts.
-          </p>
+          <p class="film-details__film-description">${film.film_info.description}</p>
         </div>
       </div>
 
       <section class="film-details__controls">
-        <button type="button" class="film-details__control-button film-details__control-button--active film-details__control-button--watchlist" id="watchlist" name="watchlist">Add to watchlist</button>
-        <button type="button" class="film-details__control-button film-details__control-button--watched" id="watched" name="watched">Already watched</button>
-        <button type="button" class="film-details__control-button film-details__control-button--favorite" id="favorite" name="favorite">Add to favorites</button>
+        <button type="button" class="film-details__control-button film-details__control-button--watchlist ${isActive(film.user_details.watchlist)}" id="watchlist" name="watchlist">Add to watchlist</button>
+        <button type="button" class="film-details__control-button film-details__control-button--watched ${isActive(film.user_details.favorite)}" id="watched" name="watched">Already watched</button>
+        <button type="button" class="film-details__control-button film-details__control-button--favorite ${isActive(film.user_details.already_watched)}" id="favorite" name="favorite">Add to favorites</button>
       </section>
     </div>
 
     <div class="film-details__bottom-container">
       <section class="film-details__comments-wrap">
-        <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">0</span></h3>
+        <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${film.comments.length}</span></h3>
 
         <ul class="film-details__comments-list"></ul>
 
@@ -115,8 +123,12 @@ const filmDetailsElement = () =>`<section class="film-details">
 </section>`;
 
 export default class FilmDetailsView {
+  constructor (film) {
+    this.film = film;
+  }
+
   getTemplate() {
-    return filmDetailsElement();
+    return filmDetailsElement(this.film);
   }
 
   getElement() {

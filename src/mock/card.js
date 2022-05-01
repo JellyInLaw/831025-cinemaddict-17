@@ -1,5 +1,4 @@
 import { getRandomInteger } from '../utils';
-import { getCommentsIds} from './comments';
 
 const getTitle = () => {
   const titles = [
@@ -28,7 +27,7 @@ const getPoster = () => {
 };
 
 const getGenre = () => {
-  const genres = [
+  const arr = [
     'Action',
     'Comedy',
     'Drama',
@@ -37,7 +36,12 @@ const getGenre = () => {
     'Mystery',
     'Romance'
   ];
-  return genres[getRandomInteger(0,6)];
+
+  const genres = [];
+  for (let i = 0 ; i < 3 ; i ++) {
+    genres.push(arr[getRandomInteger(0,6)]);
+  }
+  return genres;
 };
 
 const getDescription = () => {
@@ -53,6 +57,15 @@ const getDescription = () => {
     'Aliquam erat volutpat. Nunc fermentum tortor ac porta dapibus. ',
     'In rutrum ac purus sit amet tempus.'];
   return blablas[getRandomInteger(0,9)];
+};
+
+const getCommentsIds = () => {
+  const arr = [];
+  for (let i = 0; i < getRandomInteger(0,100); i ++) {
+    arr.push(getRandomInteger(0,9999));
+  }
+  return arr;
+
 };
 
 const getBoolean = () => {
@@ -81,9 +94,7 @@ export const generateMovie = () => ({
       'release_country': 'Finland'
     },
     'runtime': getRandomInteger(10,190),
-    'genre': [
-      getGenre()
-    ],
+    'genre': getGenre(),
     'description': getDescription(),
   },
   'user_details': {

@@ -24,24 +24,13 @@ const getComment = () => {
 };
 
 const getComments = (countComments) => {
-
   const arr = [];
   for (let i = 0; i < countComments; i ++) {
     arr.push([getComment()]);
   }
   return arr;
-
 };
 
 const comments = getComments(9999);
 
-const getCommentsIds = () => {
-  const arr = [];
-  for (let i = 0; i < getRandomInteger(0,100); i ++) {
-    arr.push(getRandomInteger(0,9999));
-  }
-  return arr;
-
-};
-
-export {comments,getCommentsIds};
+export {comments};

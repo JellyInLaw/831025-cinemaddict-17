@@ -21,3 +21,5 @@ const filmsPresenter = new FilmsPresenter();
 filmsPresenter.init(main,cardModel);
 
 render(new FooterStatisticsView(),footer);
+
+
