@@ -1,6 +1,6 @@
 import { getRandomInteger } from '../utils';
 
-const getComment = () => {
+const getComment = (id) => {
   const blablas = [
     'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
     'Cras aliquet varius magna, non porta ligula feugiat eget. ',
@@ -15,10 +15,10 @@ const getComment = () => {
   ];
   const emotions = ['smile', 'sleeping', 'puke', 'angry'];
   return {
-    'id': getRandomInteger(0,9999),
+    'id': `${id}`,
     'author': 'Ilya O\'Reilly',
     'comment': blablas[getRandomInteger(0,9)],
-    'date': `${getRandomInteger(2005,2022)}-${getRandomInteger(1,31)}-12T16:12:32.554Z`,
+    'date': `${getRandomInteger(2005,2022)}-05-12T16:12:32.554Z`,
     'emotion': emotions[getRandomInteger(0,3)]
   };
 };
@@ -26,11 +26,11 @@ const getComment = () => {
 const getComments = (countComments) => {
   const arr = [];
   for (let i = 0; i < countComments; i ++) {
-    arr.push([getComment()]);
+    arr.push(getComment(i));
   }
   return arr;
 };
 
-const comments = getComments(9999);
+const comments = getComments(100);
 
 export {comments};

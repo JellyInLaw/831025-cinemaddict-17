@@ -10,7 +10,29 @@ const isActive = (active) =>
     ? 'film-details__control-button--active'
     :'';
 
-const filmDetailsElement = (film) =>`<section class="film-details">
+const getCommentTemplate = (comment) => `<li class="film-details__comment">
+            <span class="film-details__comment-emoji">
+              <img src="./images/emoji/${comment.emotion}.png" width="55" height="55" alt="emoji-smile">
+            </span>
+            <div>
+              <p class="film-details__comment-text">${comment.comment}</p>
+              <p class="film-details__comment-info">
+                <span class="film-details__comment-author">${comment.author}</span>
+                <span class="film-details__comment-day">${dayjs(comment.date).format('YYYY/MM/DD HH:MM')}</span>
+                <button class="film-details__comment-delete">Delete</button>
+              </p>
+            </div>
+          </li>`;
+
+const getComments = (comments) => {
+  const arr = [];
+  comments.forEach(((element) => {
+    arr.push(getCommentTemplate(element));
+  }));
+  return arr.join();
+};
+
+const filmDetailsElement = (film,comments) =>`<section class="film-details">
   <form class="film-details__inner" action="" method="get">
     <div class="film-details__top-container">
       <div class="film-details__close">
@@ -84,7 +106,7 @@ const filmDetailsElement = (film) =>`<section class="film-details">
       <section class="film-details__comments-wrap">
         <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${film.comments.length}</span></h3>
 
-        <ul class="film-details__comments-list"></ul>
+        <ul class="film-details__comments-list">${getComments(comments)}</ul>
 
         <div class="film-details__new-comment">
           <div class="film-details__add-emoji-label">
@@ -123,12 +145,13 @@ const filmDetailsElement = (film) =>`<section class="film-details">
 </section>`;
 
 export default class FilmDetailsView {
-  constructor (film) {
+  constructor (film,comments) {
     this.film = film;
+    this.comments = comments;
   }
 
   getTemplate() {
-    return filmDetailsElement(this.film);
+    return filmDetailsElement(this.film,this.comments);
   }
 
   getElement() {

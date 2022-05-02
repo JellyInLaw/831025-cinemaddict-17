@@ -62,7 +62,7 @@ const getDescription = () => {
 const getCommentsIds = () => {
   const arr = [];
   for (let i = 0; i < getRandomInteger(0,100); i ++) {
-    arr.push(getRandomInteger(0,9999));
+    arr.push(getRandomInteger(0,99).toString());
   }
   return arr;
 
