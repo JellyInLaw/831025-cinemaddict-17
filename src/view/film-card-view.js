@@ -1,28 +1,47 @@
 import { createElement } from '../render';
+import dayjs from 'dayjs';
 
-const filmCardElement = () => `<article class="film-card">
+const createCardTemplate = (film) => {
+  const title = film.film_info.title;
+  const totalRating = film.film_info.total_rating;
+  const releaseDate = dayjs(film.film_info.release.date).format('YYYY');
+  const runtime = film.film_info.runtime;
+  const genre = film.film_info.genre;
+  const poster = film.film_info.poster;
+  const description = film.film_info.description;
+  const countComments = film.comments.length;
+  const isWatchlist = film.user_details.watchlist ? 'film-card__controls-item--active' : '';
+  const isAlreadyWatched = film.user_details.already_watched ? 'film-card__controls-item--active' : '';
+  const isFavorite = film.user_details.favorite ? 'film-card__controls-item--active' : '';
+
+  return (`<article class="film-card">
   <a class="film-card__link">
-    <h3 class="film-card__title">Popeye the Sailor Meets Sindbad the Sailor</h3>
-    <p class="film-card__rating">6.3</p>
+    <h3 class="film-card__title">${title}</h3>
+    <p class="film-card__rating">${totalRating}</p>
     <p class="film-card__info">
-      <span class="film-card__year">1936</span>
-      <span class="film-card__duration">16m</span>
-      <span class="film-card__genre">Cartoon</span>
+      <span class="film-card__year">${releaseDate}</span>
+      <span class="film-card__duration">${runtime}m</span>
+      <span class="film-card__genre">${genre}</span>
     </p>
-    <img src="./images/posters/popeye-meets-sinbad.png" alt="" class="film-card__poster">
-    <p class="film-card__description">In this short, Sindbad the Sailor (presumably Bluto playing a "role") proclaims himself, in song, to be the greatest sailor, adventurer and…</p>
-      <span class="film-card__comments">0 comments</span>
+    <img src="./${poster}" alt="" class="film-card__poster">
+    <p class="film-card__description">${description}</p>
+      <span class="film-card__comments">${countComments} comments</span>
   </a>
   <div class="film-card__controls">
-    <button class="film-card__controls-item film-card__controls-item--add-to-watchlist film-card__controls-item--active" type="button">Add to watchlist</button>
-    <button class="film-card__controls-item film-card__controls-item--mark-as-watched film-card__controls-item--active" type="button">Mark as watched</button>
-    <button class="film-card__controls-item film-card__controls-item--favorite film-card__controls-item--active" type="button">Mark as favorite</button>
+    <button class="film-card__controls-item film-card__controls-item--add-to-watchlist ${isWatchlist}" type="button">Add to watchlist</button>
+    <button class="film-card__controls-item film-card__controls-item--mark-as-watched ${isAlreadyWatched}" type="button">Mark as watched</button>
+    <button class="film-card__controls-item film-card__controls-item--favorite ${isFavorite}" type="button">Mark as favorite</button>
   </div>
-</article>`;
+</article>`);
+};
 
 export default class FilmCardView {
+  constructor (film) {
+    this.film = film;
+  }
+
   getTemplate() {
-    return filmCardElement();
+    return createCardTemplate(this.film);
   }
 
   getElement() {
