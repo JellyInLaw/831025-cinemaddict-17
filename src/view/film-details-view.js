@@ -29,7 +29,7 @@ const getComments = (comments) => {
   comments.forEach(((element) => {
     arr.push(getCommentTemplate(element));
   }));
-  return arr.join();
+  return arr.join(arr);
 };
 
 const filmDetailsElement = (film,comments) =>`<section class="film-details">
