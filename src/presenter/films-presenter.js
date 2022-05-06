@@ -11,6 +11,11 @@ export default class FilmsPresenter {
 
   cardModel = new CardModel;
 
+  #renderCard = (card,component) => {
+    const cardComponent = new FilmCardView(card);
+    render (cardComponent,component);
+  };
+
   init = (filmsContainer,cardModel) => {
 
     this.cards = [...cardModel.cards];
@@ -19,8 +24,9 @@ export default class FilmsPresenter {
     const filmsComponent = document.querySelector('.films-list__container');
 
     for (let i = 0 ; i < this.cards.length ; i++) {
-      render(new FilmCardView(this.cards[i]),filmsComponent);
+      this.#renderCard(this.cards[i],filmsComponent);
     }
+
     const placeForShowMoreButton = document.querySelector('.films-list');
     render(new ShowMoreButtonView(),placeForShowMoreButton);
 
