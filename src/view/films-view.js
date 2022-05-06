@@ -16,10 +16,6 @@ export default class FilmsView {
     return filmsElement();
   }
 
-  // getTemplate() {
-  //   return filmsElement();
-  // }
-
   get element () {
     if (!this.#element) {
       this.#element = createElement(this.template);
@@ -27,14 +23,6 @@ export default class FilmsView {
 
     return this.#element;
   }
-
-  // getElement() {
-  //   if (!this.element) {
-  //     this.element = createElement(this.getTemplate());
-  //   }
-
-  //   return this.element;
-  // }
 
   removeElement() {
     this.#element = null;

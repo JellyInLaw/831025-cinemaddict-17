@@ -33,6 +33,7 @@ export default class FilmsPresenter {
       if (evt.key === 'Escape' || evt.key === 'Esc') {
         evt.preventDefault();
         body.removeChild(body.querySelector('.film-details'));
+        body.classList.remove('hide-overflow');
         document.removeEventListener('keydown', onEscDown);
       }
     };
