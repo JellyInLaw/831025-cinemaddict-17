@@ -29,18 +29,29 @@ export default class FilmsPresenter {
     const commentsToRender = this.#getCardCommentsArr(cardCommentsIds);
     const filmDetailsView = new FilmDetailsView(card,commentsToRender);
 
+    const onEscDown = (evt) => {
+      if (evt.key === 'Escape' || evt.key === 'Esc') {
+        evt.preventDefault();
+        body.removeChild(body.querySelector('.film-details'));
+        document.removeEventListener('keydown', onEscDown);
+      }
+    };
+
     cardComponent.element.addEventListener('click',() => {
       body.classList.add('hide-overflow');
       if (body.querySelector('.film-details')) {
         body.removeChild(body.querySelector('.film-details'));
       }
+      document.addEventListener('keydown', onEscDown);
       render(filmDetailsView,body);
     });
 
     filmDetailsView.element.querySelector('.film-details__close-btn').addEventListener('click',() => {
       body.classList.remove('hide-overflow');
       body.removeChild(body.querySelector('.film-details'));
+      document.removeEventListener('keydown', onEscDown);
     });
+
 
     render (cardComponent,component);
   };
