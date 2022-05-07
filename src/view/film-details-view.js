@@ -29,7 +29,7 @@ const getComments = (comments) => {
   comments.forEach(((element) => {
     arr.push(getCommentTemplate(element));
   }));
-  return arr.join();
+  return arr.join(arr);
 };
 
 const filmDetailsElement = (film,comments) =>`<section class="film-details">
@@ -150,19 +150,21 @@ export default class FilmDetailsView {
     this.comments = comments;
   }
 
-  getTemplate() {
+  #element = null;
+
+  get template() {
     return filmDetailsElement(this.film,this.comments);
   }
 
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
+  get element() {
+    if (!this.#element) {
+      this.#element = createElement(this.template);
     }
 
-    return this.element;
+    return this.#element;
   }
 
   removeElement() {
-    this.element = null;
+    this.#element = null;
   }
 }
