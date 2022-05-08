@@ -4,16 +4,17 @@ import FilmCardView from '../view/film-card-view';
 import FilmsView from '../view/films-view';
 import ShowMoreButtonView from '../view/show-more-button-view';
 import { comments } from '../mock/comments';
-import CardModel from '../model/card-model';
 import ListEmptyView from '../view/list-empty-view';
 import SortView from '../view/sort-view';
 
 const FILMS_COUNT_PER_STEP = 5;
-// const main = document.querySelector('.main');
 
 export default class FilmsPresenter {
+  constructor (filmsContainer,cardModel) {
+    this.filmsContainer = filmsContainer;
+    this.cardModel = cardModel;
+  }
 
-  #cardModel = new CardModel;
   #showMoreButtonComponent = new ShowMoreButtonView();
   #renderedFilmsCount = FILMS_COUNT_PER_STEP;
   #main = document.querySelector('.main');
@@ -79,15 +80,15 @@ export default class FilmsPresenter {
     render (cardComponent,component);
   };
 
-  init = (filmsContainer,cardModel) => {
+  init = () => {
 
-    this.cards = [...cardModel.cards];
+    this.cards = [...this.cardModel.cards];
 
     if (this.cards.length === 0) {
-      render(new ListEmptyView(),filmsContainer);
+      render(new ListEmptyView(),this.filmsContainer);
     } else {
       render(new SortView(),this.#main);
-      render(new FilmsView(),filmsContainer);
+      render(new FilmsView(),this.filmsContainer);
       const filmsComponent = this.#getFilmsContainer();
 
       for ( let i = 0 ; i < Math.min(this.cards.length,FILMS_COUNT_PER_STEP) ; i ++) {

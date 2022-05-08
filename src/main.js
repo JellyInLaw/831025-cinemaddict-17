@@ -15,9 +15,9 @@ render(new MainNavigationElement(),main);
 
 const cardModel = new CardModel();
 
-const filmsPresenter = new FilmsPresenter();
+const filmsPresenter = new FilmsPresenter(main,cardModel);
 
-filmsPresenter.init(main,cardModel);
+filmsPresenter.init();
 
 render(new FooterStatisticsView(),footer);
 

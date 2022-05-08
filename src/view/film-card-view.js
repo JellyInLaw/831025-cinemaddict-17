@@ -50,7 +50,6 @@ export default class FilmCardView {
     if (!this.#element) {
       this.#element = createElement(this.template);
     }
-
     return this.#element;
   }
 
