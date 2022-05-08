@@ -5,14 +5,18 @@ import FilmsView from '../view/films-view';
 import ShowMoreButtonView from '../view/show-more-button-view';
 import { comments } from '../mock/comments';
 import CardModel from '../model/card-model';
+import ListEmptyView from '../view/list-empty-view';
+import SortView from '../view/sort-view';
 
 const FILMS_COUNT_PER_STEP = 5;
+// const main = document.querySelector('.main');
 
 export default class FilmsPresenter {
 
   #cardModel = new CardModel;
   #showMoreButtonComponent = new ShowMoreButtonView();
   #renderedFilmsCount = FILMS_COUNT_PER_STEP;
+  #main = document.querySelector('.main');
 
   #getCardCommentsArr = (cardCommentsIds) => {
     const commentsArr = [];
@@ -79,18 +83,22 @@ export default class FilmsPresenter {
 
     this.cards = [...cardModel.cards];
 
-    render(new FilmsView(),filmsContainer);
-    const filmsComponent = this.#getFilmsContainer();
+    if (this.cards.length === 0) {
+      render(new ListEmptyView(),filmsContainer);
+    } else {
+      render(new SortView(),this.#main);
+      render(new FilmsView(),filmsContainer);
+      const filmsComponent = this.#getFilmsContainer();
 
-    for ( let i = 0 ; i < Math.min(this.cards.length,FILMS_COUNT_PER_STEP) ; i ++) {
-      this.#renderCard(this.cards[i],filmsComponent);
-    }
+      for ( let i = 0 ; i < Math.min(this.cards.length,FILMS_COUNT_PER_STEP) ; i ++) {
+        this.#renderCard(this.cards[i],filmsComponent);
+      }
 
-    if (this.cards.length > FILMS_COUNT_PER_STEP) {
-      const placeForShowMoreButton = document.querySelector('.films-list');
-      render(this.#showMoreButtonComponent,placeForShowMoreButton);
-      this.#showMoreButtonComponent.element.addEventListener('click',this.#handleShowMoreButtonClick);
-
+      if (this.cards.length > FILMS_COUNT_PER_STEP) {
+        const placeForShowMoreButton = document.querySelector('.films-list');
+        render(this.#showMoreButtonComponent,placeForShowMoreButton);
+        this.#showMoreButtonComponent.element.addEventListener('click',this.#handleShowMoreButtonClick);
+      }
     }
 
   };
