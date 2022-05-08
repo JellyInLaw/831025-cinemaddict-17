@@ -6,9 +6,13 @@ import ShowMoreButtonView from '../view/show-more-button-view';
 import { comments } from '../mock/comments';
 import CardModel from '../model/card-model';
 
+const FILMS_COUNT_PER_STEP = 5;
+
 export default class FilmsPresenter {
 
-  cardModel = new CardModel;
+  #cardModel = new CardModel;
+  #showMoreButtonComponent = new ShowMoreButtonView();
+  #renderedFilmsCount = FILMS_COUNT_PER_STEP;
 
   #getCardCommentsArr = (cardCommentsIds) => {
     const commentsArr = [];
@@ -20,6 +24,22 @@ export default class FilmsPresenter {
       }
     }
     return commentsArr;
+  };
+
+  #getFilmsContainer = () => document.querySelector('.films-list__container');
+
+  #handleShowMoreButtonClick = (evt) => {
+    evt.preventDefault();
+    this.cards
+      .slice(this.#renderedFilmsCount,this.#renderedFilmsCount + FILMS_COUNT_PER_STEP)
+      .forEach((card) => this.#renderCard(card,this.#getFilmsContainer()));
+
+    this.#renderedFilmsCount += FILMS_COUNT_PER_STEP;
+
+    if (this.#renderedFilmsCount >= this.cards.length) {
+      this.#showMoreButtonComponent.element.remove();
+      this.#showMoreButtonComponent.removeElement();
+    }
   };
 
   #renderCard = (card,component) => {
@@ -52,8 +72,6 @@ export default class FilmsPresenter {
       body.removeChild(body.querySelector('.film-details'));
       document.removeEventListener('keydown', onEscDown);
     });
-
-
     render (cardComponent,component);
   };
 
@@ -62,14 +80,19 @@ export default class FilmsPresenter {
     this.cards = [...cardModel.cards];
 
     render(new FilmsView(),filmsContainer);
-    const filmsComponent = document.querySelector('.films-list__container');
+    const filmsComponent = this.#getFilmsContainer();
 
-    for (let i = 0 ; i < this.cards.length ; i++) {
+    for ( let i = 0 ; i < Math.min(this.cards.length,FILMS_COUNT_PER_STEP) ; i ++) {
       this.#renderCard(this.cards[i],filmsComponent);
     }
 
-    const placeForShowMoreButton = document.querySelector('.films-list');
-    render(new ShowMoreButtonView(),placeForShowMoreButton);
+    if (this.cards.length > FILMS_COUNT_PER_STEP) {
+      const placeForShowMoreButton = document.querySelector('.films-list');
+      render(this.#showMoreButtonComponent,placeForShowMoreButton);
+      this.#showMoreButtonComponent.element.addEventListener('click',this.#handleShowMoreButtonClick);
+
+    }
+
   };
 }
 
