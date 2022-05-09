@@ -56,4 +56,14 @@ export default class FilmCardView {
   removeElement() {
     this.#element = null;
   }
+
+  addClickEvent (element,body,onEscDown,render,filmDetailsView) {
+    element.addEventListener('click',() => {
+      body.classList.add('hide-overflow');
+      if (body.querySelector('.film-details')) {
+        body.removeChild(body.querySelector('.film-details'));
+      }document.addEventListener('keydown', onEscDown);
+      render(filmDetailsView,body);
+    });
+  }
 }

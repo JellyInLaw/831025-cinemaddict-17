@@ -63,20 +63,10 @@ export default class FilmsPresenter {
       }
     };
 
-    cardComponent.element.addEventListener('click',() => {
-      body.classList.add('hide-overflow');
-      if (body.querySelector('.film-details')) {
-        body.removeChild(body.querySelector('.film-details'));
-      }
-      document.addEventListener('keydown', onEscDown);
-      render(filmDetailsView,body);
-    });
+    cardComponent.addClickEvent(cardComponent.element,body,onEscDown,render,filmDetailsView);
 
-    filmDetailsView.element.querySelector('.film-details__close-btn').addEventListener('click',() => {
-      body.classList.remove('hide-overflow');
-      body.removeChild(body.querySelector('.film-details'));
-      document.removeEventListener('keydown', onEscDown);
-    });
+    filmDetailsView.addCloseEvent(filmDetailsView.element.querySelector('.film-details__close-btn'),body,onEscDown);
+
     render (cardComponent,component);
   };
 
@@ -104,4 +94,3 @@ export default class FilmsPresenter {
 
   };
 }
-

@@ -167,4 +167,12 @@ export default class FilmDetailsView {
   removeElement() {
     this.#element = null;
   }
+
+  addCloseEvent (element,body,onEscDown) {
+    element.addEventListener('click',() => {
+      body.classList.remove('hide-overflow');
+      body.removeChild(body.querySelector('.film-details'));
+      document.removeEventListener('keydown', onEscDown);
+    });
+  }
 }
