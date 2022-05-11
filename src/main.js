@@ -1,7 +1,7 @@
 import ProfileRatingElement from './view/profile-rating-view';
 import MainNavigationElement from './view/main-navigation-view';
 import FooterStatisticsView from './view/footer-statistics-view';
-import { render } from './render';
+import { render } from './framework/render';
 import FilmsPresenter from './presenter/films-presenter';
 import CardModel from './model/card-model';
 

@@ -1,4 +1,4 @@
-import { render } from '../render';
+import { render } from '../framework/render';
 import FilmDetailsView from '../view/film-details-view';
 import FilmCardView from '../view/film-card-view';
 import FilmsView from '../view/films-view';
