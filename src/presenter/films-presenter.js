@@ -1,4 +1,4 @@
-import { render } from '../framework/render';
+import { remove, render } from '../framework/render';
 import FilmDetailsView from '../view/film-details-view';
 import FilmCardView from '../view/film-card-view';
 import FilmsView from '../view/films-view';
@@ -22,10 +22,10 @@ export default class FilmsPresenter {
 
   #getCardCommentsArr = (cardCommentsIds) => {
     const commentsArr = [];
-    for (let i = 0 ; i < cardCommentsIds.length ; i ++) {
-      for (let j = 0 ; j < comments.length ; j ++) {
-        if (cardCommentsIds[i] === comments[j].id) {
-          commentsArr.push(comments[j]);
+    for (const commentId of cardCommentsIds) {
+      for (const comment of comments) {
+        if (commentId === comment.id) {
+          commentsArr.push(comment);
         }
       }
     }
@@ -58,7 +58,7 @@ export default class FilmsPresenter {
     const onEscDown = (evt) => {
       if (evt.key === 'Escape' || evt.key === 'Esc') {
         evt.preventDefault();
-        this.#body.removeChild(this.#body.querySelector('.film-details'));
+        remove(filmDetailsView);
         this.#body.classList.remove('hide-overflow');
         document.removeEventListener('keydown',onEscDown);
       }
@@ -67,19 +67,19 @@ export default class FilmsPresenter {
     const handleClickCard = () => {
       this.#body.classList.add('hide-overflow');
       if (this.#body.querySelector('.film-details')) {
-        this.#body.removeChild(this.#body.querySelector('.film-details'));
+        remove(filmDetailsView);
       }
       render(filmDetailsView,this.#body);
       document.addEventListener('keydown',onEscDown);
     };
 
     const handleClickClosePopup = () => {
-      this.#body.removeChild(this.#body.querySelector('.film-details'));
+      remove(filmDetailsView);
       this.#body.classList.remove('hide-overflow');
       document.removeEventListener('keydown',onEscDown);
     };
 
-    render (cardComponent,component);
+    render(cardComponent,component);
 
     cardComponent.setClickHandler(handleClickCard);
 
