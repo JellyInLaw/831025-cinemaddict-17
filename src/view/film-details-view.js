@@ -153,11 +153,16 @@ export default class FilmDetailsView extends AbstractView {
 
   #body = document.querySelector('.body');
 
-  get template() {
+  get template () {
     return filmDetailsElement(this.film,this.comments);
   }
 
-  addCloseEvent (callback) {
-    this.element.addEventListener('click',() => callback());
-  }
+  setCloseClickHandler = (callback) => {
+    this._callback.click = callback;
+    this.element.addEventListener('click', this.#clickHandler);
+  };
+
+  #clickHandler = () => {
+    this._callback.click();
+  };
 }

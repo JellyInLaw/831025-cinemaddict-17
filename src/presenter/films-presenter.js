@@ -34,8 +34,7 @@ export default class FilmsPresenter {
 
   #getFilmsContainer = () => document.querySelector('.films-list__container');
 
-  #handleShowMoreButtonClick = (evt) => {
-    evt.preventDefault();
+  #handleShowMoreButtonClick = () => {
     this.cards
       .slice(this.#renderedFilmsCount,this.#renderedFilmsCount + FILMS_COUNT_PER_STEP)
       .forEach((card) => this.#renderCard(card,this.#getFilmsContainer()));
@@ -76,14 +75,15 @@ export default class FilmsPresenter {
 
     const handleClickClosePopup = () => {
       this.#body.removeChild(this.#body.querySelector('.film-details'));
+      this.#body.classList.remove('hide-overflow');
       document.removeEventListener('keydown',onEscDown);
     };
 
     render (cardComponent,component);
 
-    cardComponent.addClickEvent(handleClickCard);
+    cardComponent.setClickHandler(handleClickCard);
 
-    filmDetailsView.addCloseEvent(handleClickClosePopup);
+    filmDetailsView.setCloseClickHandler(handleClickClosePopup);
   };
 
   init = () => {
@@ -104,7 +104,7 @@ export default class FilmsPresenter {
       if (this.cards.length > FILMS_COUNT_PER_STEP) {
         const placeForShowMoreButton = document.querySelector('.films-list');
         render(this.#showMoreButtonComponent,placeForShowMoreButton);
-        this.#showMoreButtonComponent.element.addEventListener('click',this.#handleShowMoreButtonClick);
+        this.#showMoreButtonComponent.setClickHandler(this.#handleShowMoreButtonClick);
       }
     }
 
