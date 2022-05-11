@@ -1,4 +1,4 @@
-import { createElement } from '../render';
+import AbstractView from '../framework/view/abstract-view';
 
 const profileRatingElement = () =>`
   <section class="header__profile profile">
@@ -6,23 +6,8 @@ const profileRatingElement = () =>`
     <img class="profile__avatar" src="images/bitmap@2x.png" alt="Avatar" width="35" height="35">
   </section>`;
 
-export default class ProfileRatingView {
-
-  #element = null;
-
+export default class ProfileRatingView extends AbstractView {
   get template () {
     return profileRatingElement();
-  }
-
-  get element () {
-    if (!this.#element) {
-      this.#element = createElement(this.template);
-    }
-
-    return this.#element;
-  }
-
-  removeElement() {
-    this.#element = null;
   }
 }
