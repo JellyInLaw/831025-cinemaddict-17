@@ -1,6 +1,5 @@
 import { createElement } from '../render';
 import dayjs from 'dayjs';
-import { onEscDown } from '../presenter/films-presenter';
 
 const getDateForPopup = (date) => dayjs(date).format('DD MMMM YYYY');
 
@@ -170,10 +169,7 @@ export default class FilmDetailsView {
     this.#element = null;
   }
 
-  addCloseEvent () {
-    this.element.querySelector('.film-details__close-btn').addEventListener('click',() => {
-      this.#body.removeChild(this.#body.querySelector('.film-details'));
-      document.removeEventListener('keydown', onEscDown);
-    });
+  addCloseEvent (callback) {
+    this.element.addEventListener('click',() => callback());
   }
 }

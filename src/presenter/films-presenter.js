@@ -8,16 +8,6 @@ import ListEmptyView from '../view/list-empty-view';
 import SortView from '../view/sort-view';
 
 const FILMS_COUNT_PER_STEP = 5;
-const body = document.querySelector('.body');
-
-export const onEscDown = (evt) => {
-  if (evt.key === 'Escape' || evt.key === 'Esc') {
-    evt.preventDefault();
-    body.removeChild(body.querySelector('.film-details'));
-    body.classList.remove('hide-overflow');
-    document.removeEventListener('keydown', onEscDown);
-  }
-};
 
 export default class FilmsPresenter {
   constructor (filmsContainer,cardModel) {
@@ -28,6 +18,7 @@ export default class FilmsPresenter {
   #showMoreButtonComponent = new ShowMoreButtonView();
   #renderedFilmsCount = FILMS_COUNT_PER_STEP;
   #main = document.querySelector('.main');
+  #body = document.querySelector('.body');
 
   #getCardCommentsArr = (cardCommentsIds) => {
     const commentsArr = [];
@@ -57,6 +48,7 @@ export default class FilmsPresenter {
     }
   };
 
+
   #renderCard = (card,component) => {
 
     const cardComponent = new FilmCardView(card);
@@ -64,11 +56,34 @@ export default class FilmsPresenter {
     const commentsToRender = this.#getCardCommentsArr(cardCommentsIds);
     const filmDetailsView = new FilmDetailsView(card,commentsToRender);
 
-    cardComponent.addClickEvent(filmDetailsView);
+    const onEscDown = (evt) => {
+      if (evt.key === 'Escape' || evt.key === 'Esc') {
+        evt.preventDefault();
+        this.#body.removeChild(this.#body.querySelector('.film-details'));
+        this.#body.classList.remove('hide-overflow');
+        document.removeEventListener('keydown',onEscDown);
+      }
+    };
 
-    filmDetailsView.addCloseEvent();
+    const handleClickCard = () => {
+      this.#body.classList.add('hide-overflow');
+      if (this.#body.querySelector('.film-details')) {
+        this.#body.removeChild(this.#body.querySelector('.film-details'));
+      }
+      render(filmDetailsView,this.#body);
+      document.addEventListener('keydown',onEscDown);
+    };
+
+    const handleClickClosePopup = () => {
+      this.#body.removeChild(this.#body.querySelector('.film-details'));
+      document.removeEventListener('keydown',onEscDown);
+    };
 
     render (cardComponent,component);
+
+    cardComponent.addClickEvent(handleClickCard);
+
+    filmDetailsView.addCloseEvent(handleClickClosePopup);
   };
 
   init = () => {
