@@ -8,6 +8,16 @@ import ListEmptyView from '../view/list-empty-view';
 import SortView from '../view/sort-view';
 
 const FILMS_COUNT_PER_STEP = 5;
+const body = document.querySelector('.body');
+
+export const onEscDown = (evt) => {
+  if (evt.key === 'Escape' || evt.key === 'Esc') {
+    evt.preventDefault();
+    body.removeChild(body.querySelector('.film-details'));
+    body.classList.remove('hide-overflow');
+    document.removeEventListener('keydown', onEscDown);
+  }
+};
 
 export default class FilmsPresenter {
   constructor (filmsContainer,cardModel) {
@@ -48,24 +58,15 @@ export default class FilmsPresenter {
   };
 
   #renderCard = (card,component) => {
-    const body = document.querySelector('.body');
+
     const cardComponent = new FilmCardView(card);
     const cardCommentsIds = card.comments;
     const commentsToRender = this.#getCardCommentsArr(cardCommentsIds);
     const filmDetailsView = new FilmDetailsView(card,commentsToRender);
 
-    const onEscDown = (evt) => {
-      if (evt.key === 'Escape' || evt.key === 'Esc') {
-        evt.preventDefault();
-        body.removeChild(body.querySelector('.film-details'));
-        body.classList.remove('hide-overflow');
-        document.removeEventListener('keydown', onEscDown);
-      }
-    };
+    cardComponent.addClickEvent(filmDetailsView);
 
-    cardComponent.addClickEvent(cardComponent.element,body,onEscDown,render,filmDetailsView);
-
-    filmDetailsView.addCloseEvent(filmDetailsView.element.querySelector('.film-details__close-btn'),body,onEscDown);
+    filmDetailsView.addCloseEvent();
 
     render (cardComponent,component);
   };

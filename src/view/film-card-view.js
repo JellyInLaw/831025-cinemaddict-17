@@ -1,5 +1,7 @@
 import { createElement } from '../render';
 import dayjs from 'dayjs';
+import { render } from '../render';
+import { onEscDown } from '../presenter/films-presenter';
 
 const createCardTemplate = (film) => {
   const title = film.film_info.title;
@@ -41,6 +43,7 @@ export default class FilmCardView {
   }
 
   #element = null;
+  #body = document.querySelector('.body');
 
   get template() {
     return createCardTemplate(this.film);
@@ -57,13 +60,14 @@ export default class FilmCardView {
     this.#element = null;
   }
 
-  addClickEvent (element,body,onEscDown,render,filmDetailsView) {
-    element.addEventListener('click',() => {
-      body.classList.add('hide-overflow');
-      if (body.querySelector('.film-details')) {
-        body.removeChild(body.querySelector('.film-details'));
-      }document.addEventListener('keydown', onEscDown);
-      render(filmDetailsView,body);
+  addClickEvent (filmDetailsView) {
+    this.element.addEventListener('click',() => {
+      this.#body.classList.add('hide-overflow');
+      if (this.#body.querySelector('.film-details')) {
+        this.#body.removeChild(this.#body.querySelector('.film-details'));
+      }
+      render(filmDetailsView,this.#body);
+      document.addEventListener('keydown', onEscDown);
     });
   }
 }
