@@ -1,6 +1,5 @@
 import ProfileRatingElement from './view/profile-rating-view';
 import MainNavigationElement from './view/main-navigation-view';
-import SortElement from './view/sort-view';
 import FooterStatisticsView from './view/footer-statistics-view';
 import { render } from './render';
 import FilmsPresenter from './presenter/films-presenter';
@@ -12,13 +11,13 @@ const footer = document.querySelector('.footer');
 
 render(new ProfileRatingElement(),header);
 render(new MainNavigationElement(),main);
-render(new SortElement(),main);
+
 
 const cardModel = new CardModel();
 
-const filmsPresenter = new FilmsPresenter();
+const filmsPresenter = new FilmsPresenter(main,cardModel);
 
-filmsPresenter.init(main,cardModel);
+filmsPresenter.init();
 
 render(new FooterStatisticsView(),footer);
 

@@ -50,11 +50,14 @@ export default class FilmCardView {
     if (!this.#element) {
       this.#element = createElement(this.template);
     }
-
     return this.#element;
   }
 
   removeElement() {
     this.#element = null;
+  }
+
+  addClickEvent (callback) {
+    this.element.addEventListener('click',() => callback());
   }
 }

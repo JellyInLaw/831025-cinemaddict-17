@@ -151,6 +151,7 @@ export default class FilmDetailsView {
   }
 
   #element = null;
+  #body = document.querySelector('.body');
 
   get template() {
     return filmDetailsElement(this.film,this.comments);
@@ -166,5 +167,9 @@ export default class FilmDetailsView {
 
   removeElement() {
     this.#element = null;
+  }
+
+  addCloseEvent (callback) {
+    this.element.addEventListener('click',() => callback());
   }
 }
