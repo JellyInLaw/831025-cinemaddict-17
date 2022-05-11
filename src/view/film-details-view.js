@@ -1,4 +1,4 @@
-import { createElement } from '../render';
+import AbstractView from '../framework/view/abstract-view';
 import dayjs from 'dayjs';
 
 const getDateForPopup = (date) => dayjs(date).format('DD MMMM YYYY');
@@ -144,29 +144,17 @@ const filmDetailsElement = (film,comments) =>`<section class="film-details">
   </form>
 </section>`;
 
-export default class FilmDetailsView {
+export default class FilmDetailsView extends AbstractView {
   constructor (film,comments) {
+    super();
     this.film = film;
     this.comments = comments;
   }
 
-  #element = null;
   #body = document.querySelector('.body');
 
   get template() {
     return filmDetailsElement(this.film,this.comments);
-  }
-
-  get element() {
-    if (!this.#element) {
-      this.#element = createElement(this.template);
-    }
-
-    return this.#element;
-  }
-
-  removeElement() {
-    this.#element = null;
   }
 
   addCloseEvent (callback) {
