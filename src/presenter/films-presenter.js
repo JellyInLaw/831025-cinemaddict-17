@@ -42,8 +42,7 @@ export default class FilmsPresenter {
     this.#renderedFilmsCount += FILMS_COUNT_PER_STEP;
 
     if (this.#renderedFilmsCount >= this.cards.length) {
-      this.#showMoreButtonComponent.element.remove();
-      this.#showMoreButtonComponent.removeElement();
+      remove(this.#showMoreButtonComponent);
     }
   };
 
