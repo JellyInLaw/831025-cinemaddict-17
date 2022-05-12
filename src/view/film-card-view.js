@@ -1,4 +1,4 @@
-import { createElement } from '../render';
+import AbstractView from '../framework/view/abstract-view';
 import dayjs from 'dayjs';
 
 const createCardTemplate = (film) => {
@@ -35,29 +35,22 @@ const createCardTemplate = (film) => {
 </article>`);
 };
 
-export default class FilmCardView {
+export default class FilmCardView extends AbstractView {
   constructor (film) {
+    super();
     this.film = film;
   }
 
-  #element = null;
-
-  get template() {
+  get template () {
     return createCardTemplate(this.film);
   }
 
-  get element() {
-    if (!this.#element) {
-      this.#element = createElement(this.template);
-    }
-    return this.#element;
-  }
+  setClickHandler = (callback) => {
+    this._callback.click = callback;
+    this.element.addEventListener('click', this.#clickHandler);
+  };
 
-  removeElement() {
-    this.#element = null;
-  }
-
-  addClickEvent (callback) {
-    this.element.addEventListener('click',() => callback());
-  }
+  #clickHandler = () => {
+    this._callback.click();
+  };
 }
