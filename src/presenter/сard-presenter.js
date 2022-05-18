@@ -32,11 +32,14 @@ export default class CardPresenter {
   };
 
   #handleClickCard = () => {
-    this.#body.classList.add('hide-overflow');
     if (this.#body.querySelector('.film-details')) {
-      remove(this.filmDetailsView);
+      this.#body.removeChild(this.#body.querySelector('.film-details'));
     }
+
+    this.filmDetailsView = new FilmDetailsView(this.card,this.commentsToRender);
     render(this.filmDetailsView,this.#body);
+    this.filmDetailsView.setCloseClickHandler(this.#handleClickClosePopup);
+    this.#body.classList.add('hide-overflow');
     document.addEventListener('keydown',this.#onEscDown);
   };
 
@@ -51,10 +54,9 @@ export default class CardPresenter {
     this.cardComponent = new FilmCardView(this.card);
     this.cardCommentsIds = card.comments;
     this.commentsToRender = this.#getCardCommentsArr(this.cardCommentsIds);
-    this.filmDetailsView = new FilmDetailsView(this.card,this.commentsToRender);
 
     render(this.cardComponent,this.component);
     this.cardComponent.setClickHandler(this.#handleClickCard);
-    this.filmDetailsView.setCloseClickHandler(this.#handleClickClosePopup);
+
   };
 }

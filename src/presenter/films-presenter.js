@@ -16,7 +16,6 @@ export default class FilmsPresenter {
   #showMoreButtonComponent = new ShowMoreButtonView();
   #renderedFilmsCount = FILMS_COUNT_PER_STEP;
   #main = document.querySelector('.main');
-  #body = document.querySelector('.body');
 
   #getFilmsContainer = () => document.querySelector('.films-list__container');
 
