@@ -1,11 +1,9 @@
 import { remove, render } from '../framework/render';
-import FilmDetailsView from '../view/film-details-view';
-import FilmCardView from '../view/film-card-view';
 import FilmsView from '../view/films-view';
 import ShowMoreButtonView from '../view/show-more-button-view';
-import { comments } from '../mock/comments';
 import ListEmptyView from '../view/list-empty-view';
 import SortView from '../view/sort-view';
+import CardPresenter from './сard-presenter';
 
 const FILMS_COUNT_PER_STEP = 5;
 
@@ -19,18 +17,6 @@ export default class FilmsPresenter {
   #renderedFilmsCount = FILMS_COUNT_PER_STEP;
   #main = document.querySelector('.main');
   #body = document.querySelector('.body');
-
-  #getCardCommentsArr = (cardCommentsIds) => {
-    const commentsArr = [];
-    for (const commentId of cardCommentsIds) {
-      for (const comment of comments) {
-        if (commentId === comment.id) {
-          commentsArr.push(comment);
-        }
-      }
-    }
-    return commentsArr;
-  };
 
   #getFilmsContainer = () => document.querySelector('.films-list__container');
 
@@ -48,41 +34,8 @@ export default class FilmsPresenter {
 
 
   #renderCard = (card,component) => {
-
-    const cardComponent = new FilmCardView(card);
-    const cardCommentsIds = card.comments;
-    const commentsToRender = this.#getCardCommentsArr(cardCommentsIds);
-    const filmDetailsView = new FilmDetailsView(card,commentsToRender);
-
-    const onEscDown = (evt) => {
-      if (evt.key === 'Escape' || evt.key === 'Esc') {
-        evt.preventDefault();
-        remove(filmDetailsView);
-        this.#body.classList.remove('hide-overflow');
-        document.removeEventListener('keydown',onEscDown);
-      }
-    };
-
-    const handleClickCard = () => {
-      this.#body.classList.add('hide-overflow');
-      if (this.#body.querySelector('.film-details')) {
-        remove(filmDetailsView);
-      }
-      render(filmDetailsView,this.#body);
-      document.addEventListener('keydown',onEscDown);
-    };
-
-    const handleClickClosePopup = () => {
-      remove(filmDetailsView);
-      this.#body.classList.remove('hide-overflow');
-      document.removeEventListener('keydown',onEscDown);
-    };
-
-    render(cardComponent,component);
-
-    cardComponent.setClickHandler(handleClickCard);
-
-    filmDetailsView.setCloseClickHandler(handleClickClosePopup);
+    const cardPresenter = new CardPresenter(component);
+    cardPresenter.init(card);
   };
 
   init = () => {
