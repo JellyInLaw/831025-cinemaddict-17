@@ -32,8 +32,9 @@ export default class CardPresenter {
   };
 
   #handleClickCard = () => {
-    if (this.#body.querySelector('.film-details')) {
-      this.#body.removeChild(this.#body.querySelector('.film-details'));
+    const isPrevPopup = this.#body.querySelector('.film-details');
+    if (isPrevPopup) {
+      this.#body.removeChild(isPrevPopup);
     }
 
     this.filmDetailsView = new FilmDetailsView(this.card,this.commentsToRender);
