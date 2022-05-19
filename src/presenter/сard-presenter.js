@@ -33,6 +33,7 @@ export default class CardPresenter {
 
   #handleClickCard = () => {
     const isPrevPopup = this.#body.querySelector('.film-details');
+
     if (isPrevPopup) {
       this.#body.removeChild(isPrevPopup);
     }
@@ -42,12 +43,25 @@ export default class CardPresenter {
     this.filmDetailsView.setCloseClickHandler(this.#handleClickClosePopup);
     this.#body.classList.add('hide-overflow');
     document.addEventListener('keydown',this.#onEscDown);
+
   };
 
   #handleClickClosePopup = () => {
     remove(this.filmDetailsView);
     this.#body.classList.remove('hide-overflow');
     document.removeEventListener('keydown',this.#onEscDown);
+  };
+
+  #handleClickWathList = () => {
+    console.log('click to watchlist');
+  };
+
+  #handleClickIsWatched = () => {
+    console.log('click to IsWatched');
+  };
+
+  #handleClickMarkAsFavorite = () => {
+    console.log('click to favorite');
   };
 
   init = (card) => {
@@ -57,7 +71,10 @@ export default class CardPresenter {
     this.commentsToRender = this.#getCardCommentsArr(this.cardCommentsIds);
 
     render(this.cardComponent,this.component);
-    this.cardComponent.setClickHandler(this.#handleClickCard);
 
+    this.cardComponent.setClickHandler(this.#handleClickCard);
+    this.cardComponent.setClickWatchListHandler(this.#handleClickWathList);
+    this.cardComponent.setClickIsWatchedHandler(this.#handleClickIsWatched);
+    this.cardComponent.setClickMarkIsFavorite(this.#handleClickMarkAsFavorite);
   };
 }
