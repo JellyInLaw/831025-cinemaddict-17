@@ -16,7 +16,7 @@ export default class FilmsPresenter {
   #main = document.querySelector('.main');
   #renderedFilmsCount;
   #showMoreButtonComponent = new ShowMoreButtonView();
-
+  allCardPresenters = new Map();
 
   #getFilmsContainer = () => document.querySelector('.films-list__container');
 
@@ -34,9 +34,14 @@ export default class FilmsPresenter {
     }
   };
 
+  updateCard = (updatedCard) => {
+    this.allCardPresenters.get(updatedCard.id).init(updatedCard);
+  };
+
   renderCard = (card,component) => {
-    const cardPresenter = new CardPresenter(component);
+    const cardPresenter = new CardPresenter(component,this.updateCard);
     cardPresenter.init(card);
+    this.allCardPresenters.set(card.id,cardPresenter);
   };
 
   init = () => {
