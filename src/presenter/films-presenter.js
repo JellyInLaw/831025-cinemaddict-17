@@ -1,9 +1,9 @@
-import {  render } from '../framework/render';
+import { render,remove } from '../framework/render';
 import FilmsView from '../view/films-view';
 import ListEmptyView from '../view/list-empty-view';
 import SortView from '../view/sort-view';
 import CardPresenter from './сard-presenter';
-import ShowMoreButtonPresenter from './show-more-button-presenter';
+import ShowMoreButtonView from '../view/show-more-button-view';
 
 const FILMS_COUNT_PER_STEP = 5;
 
@@ -14,8 +14,25 @@ export default class FilmsPresenter {
   }
 
   #main = document.querySelector('.main');
+  #renderedFilmsCount;
+  #showMoreButtonComponent = new ShowMoreButtonView();
+
 
   #getFilmsContainer = () => document.querySelector('.films-list__container');
+
+  #handleShowMoreButtonClick = () => {
+    this.cards
+      .slice(this.#renderedFilmsCount,this.#renderedFilmsCount + FILMS_COUNT_PER_STEP)
+      .forEach((card) => {
+        this.renderCard(card,this.#getFilmsContainer());
+      });
+
+    this.#renderedFilmsCount += FILMS_COUNT_PER_STEP;
+
+    if (this.#renderedFilmsCount >= this.cards.length) {
+      remove(this.#showMoreButtonComponent);
+    }
+  };
 
   renderCard = (card,component) => {
     const cardPresenter = new CardPresenter(component);
@@ -38,10 +55,11 @@ export default class FilmsPresenter {
       }
 
       if (this.cards.length > FILMS_COUNT_PER_STEP) {
-        const showMoreButton = new ShowMoreButtonPresenter(filmsComponent,this.cards);
-        showMoreButton.init(FILMS_COUNT_PER_STEP);
+        this.#renderedFilmsCount = FILMS_COUNT_PER_STEP;
+        const placeForShowMoreButton = document.querySelector('.films-list');
+        render(this.#showMoreButtonComponent,placeForShowMoreButton);
+        this.#showMoreButtonComponent.setClickHandler(this.#handleShowMoreButtonClick);
       }
     }
-
   };
 }
