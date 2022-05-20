@@ -8,7 +8,7 @@ export default class CardPresenter {
     this.component = component;
   }
 
-  #body = document.querySelector('.body');
+  #body = document.body;
 
   #getCardCommentsArr = (cardCommentsIds) => {
     const commentsArr = [];

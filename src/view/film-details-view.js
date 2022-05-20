@@ -151,7 +151,7 @@ export default class FilmDetailsView extends AbstractView {
     this.comments = comments;
   }
 
-  #body = document.querySelector('.body');
+  #body = document.body;
 
   get template () {
     return filmDetailsElement(this.film,this.comments);
