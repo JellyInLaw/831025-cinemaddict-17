@@ -77,6 +77,7 @@ export default class CardPresenter {
     }
     if (this.isPopupOpen === true) {
       this.#renderPopup();
+      this.updateCard(this.card);
     }
   };
 
@@ -91,6 +92,7 @@ export default class CardPresenter {
     }
     if (this.isPopupOpen === true) {
       this.#renderPopup();
+      this.updateCard(this.card);
 
     }
   };
@@ -106,6 +108,7 @@ export default class CardPresenter {
     }
     if (this.isPopupOpen === true) {
       this.#renderPopup();
+      this.updateCard(this.card);
     }
   };
 
