@@ -11,6 +11,7 @@ export default class CardPresenter {
 
   #body = document.body;
   cardComponent = null;
+  isPopupOpen = false;
 
   #getCardCommentsArr = (cardCommentsIds) => {
     const commentsArr = [];
@@ -33,26 +34,34 @@ export default class CardPresenter {
     }
   };
 
-  #handleClickCard = () => {
-    const isPrevPopup = this.#body.querySelector('.film-details');
+  #renderPopup = () => {
+    const prevPopup = this.filmDetailsView;
 
-    if (isPrevPopup) {
-      this.#body.removeChild(isPrevPopup);
+    if (prevPopup) {
+      remove(prevPopup);
     }
 
     this.filmDetailsView = new FilmDetailsView(this.card,this.commentsToRender);
+
     render(this.filmDetailsView,this.#body);
+
+    this.isPopupOpen = true;
+
     this.filmDetailsView.setCloseClickHandler(this.#handleClickClosePopup);
     this.filmDetailsView.setClickWatchListHandler(this.#handleClickWatchList);
     this.filmDetailsView.setClickIsWatchedHandler(this.#handleClickIsWatched);
     this.filmDetailsView.setClickMarkIsFavorite(this.#handleClickMarkAsFavorite);
     this.#body.classList.add('hide-overflow');
     document.addEventListener('keydown',this.#onEscDown);
+  };
 
+  #handleClickCard = () => {
+    this.#renderPopup();
   };
 
   #handleClickClosePopup = () => {
     remove(this.filmDetailsView);
+    this.isPopupOpen = false;
     this.#body.classList.remove('hide-overflow');
     document.removeEventListener('keydown',this.#onEscDown);
   };
@@ -63,7 +72,12 @@ export default class CardPresenter {
     } else {
       this.card.user_details.watchlist = 1;
     }
-    this.updateCard(this.card);
+    if (this.isPopupOpen === false) {
+      this.updateCard(this.card);
+    }
+    if (this.isPopupOpen === true) {
+      this.#renderPopup();
+    }
   };
 
   #handleClickIsWatched = () => {
@@ -72,7 +86,13 @@ export default class CardPresenter {
     } else {
       this.card.user_details.already_watched = 1;
     }
-    this.updateCard(this.card);
+    if (this.isPopupOpen === false) {
+      this.updateCard(this.card);
+    }
+    if (this.isPopupOpen === true) {
+      this.#renderPopup();
+
+    }
   };
 
   #handleClickMarkAsFavorite = () => {
@@ -81,7 +101,12 @@ export default class CardPresenter {
     } else {
       this.card.user_details.favorite = 1;
     }
-    this.updateCard(this.card);
+    if (this.isPopupOpen === false) {
+      this.updateCard(this.card);
+    }
+    if (this.isPopupOpen === true) {
+      this.#renderPopup();
+    }
   };
 
   init = (card) => {

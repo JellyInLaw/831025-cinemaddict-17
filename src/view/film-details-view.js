@@ -97,8 +97,8 @@ const filmDetailsElement = (film,comments) =>`<section class="film-details">
 
       <section class="film-details__controls">
         <button type="button" class="film-details__control-button film-details__control-button--watchlist ${isActive(film.user_details.watchlist)}" id="watchlist" name="watchlist">Add to watchlist</button>
-        <button type="button" class="film-details__control-button film-details__control-button--watched ${isActive(film.user_details.favorite)}" id="watched" name="watched">Already watched</button>
-        <button type="button" class="film-details__control-button film-details__control-button--favorite ${isActive(film.user_details.already_watched)}" id="favorite" name="favorite">Add to favorites</button>
+        <button type="button" class="film-details__control-button film-details__control-button--watched ${isActive(film.user_details.already_watched)}" id="watched" name="watched">Already watched</button>
+        <button type="button" class="film-details__control-button film-details__control-button--favorite ${isActive(film.user_details.favorite)}" id="favorite" name="favorite">Add to favorites</button>
       </section>
     </div>
 
