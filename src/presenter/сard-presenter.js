@@ -6,9 +6,10 @@ import { comments } from '../mock/comments';
 const popupMode = {OPEN: 'open',CLOSE: 'close'};
 
 export default class CardPresenter {
-  constructor (component,updateCard) {
+  constructor (component,updateCard,popupModeChange) {
     this.component = component;
     this.updateCard = updateCard;
+    this.popupModeChange = popupModeChange;
   }
 
   #body = document.body;
@@ -37,11 +38,8 @@ export default class CardPresenter {
   };
 
   #renderPopup = () => {
-    const prevPopup = this.filmDetailsView;
 
-    if (prevPopup) {
-      remove(prevPopup);
-    }
+    this.popupModeChange();
 
     this.filmDetailsView = new FilmDetailsView(this.card,this.commentsToRender);
 
@@ -72,12 +70,12 @@ export default class CardPresenter {
 
     this.card.user_details.watchlist = !this.card.user_details.watchlist;
 
-    if (this.popupMode === 'close') {
+    if (this.popupMode === popupMode.CLOSE) {
       this.updateCard(this.card);
     }
 
     if (
-      this.popupMode === 'open') {
+      this.popupMode === popupMode.OPEN) {
       this.#renderPopup();
       this.updateCard(this.card);
     }
@@ -88,10 +86,10 @@ export default class CardPresenter {
     this.card.user_details.already_watched = !this.card.user_details.already_watched;
 
     if (
-      this.popupMode === 'close') {
+      this.popupMode === popupMode.CLOSE) {
       this.updateCard(this.card);
     }
-    if (this.popupMode === 'open') {
+    if (this.popupMode === popupMode.OPEN) {
       this.#renderPopup();
       this.updateCard(this.card);
     }
@@ -101,12 +99,18 @@ export default class CardPresenter {
 
     this.card.user_details.favorite = !this.card.user_details.favorite;
 
-    if (this.popupMode === 'close') {
+    if (this.popupMode === popupMode.CLOSE) {
       this.updateCard(this.card);
     }
-    if (this.popupMode === 'open') {
+    if (this.popupMode === popupMode.OPEN) {
       this.#renderPopup();
       this.updateCard(this.card);
+    }
+  };
+
+  closePopup = () => {
+    if (this.popupMode !== popupMode.CLOSE) {
+      remove(this.filmDetailsView);
     }
   };
 

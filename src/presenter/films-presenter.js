@@ -39,9 +39,15 @@ export default class FilmsPresenter {
   };
 
   renderCard = (card,component) => {
-    const cardPresenter = new CardPresenter(component,this.updateCard);
+    const cardPresenter = new CardPresenter(component,this.updateCard,this.handlePopupModeChange);
     cardPresenter.init(card);
     this.allCardPresenters.set(card.id,cardPresenter);
+  };
+
+  handlePopupModeChange = () => {
+    this.allCardPresenters.forEach((presenter) => {
+      presenter.closePopup();
+    });
   };
 
   init = () => {
