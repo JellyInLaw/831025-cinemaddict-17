@@ -67,11 +67,9 @@ export default class CardPresenter {
   };
 
   #handleClickWatchList = () => {
-    if (this.card.user_details.watchlist) {
-      this.card.user_details.watchlist = 0;
-    } else {
-      this.card.user_details.watchlist = 1;
-    }
+
+    this.card.user_details.watchlist = !this.card.user_details.watchlist;
+
     if (this.isPopupOpen === false) {
       this.updateCard(this.card);
     }
@@ -82,27 +80,22 @@ export default class CardPresenter {
   };
 
   #handleClickIsWatched = () => {
-    if (this.card.user_details.already_watched) {
-      this.card.user_details.already_watched = 0;
-    } else {
-      this.card.user_details.already_watched = 1;
-    }
+
+    this.card.user_details.already_watched = !this.card.user_details.already_watched;
+
     if (this.isPopupOpen === false) {
       this.updateCard(this.card);
     }
     if (this.isPopupOpen === true) {
       this.#renderPopup();
       this.updateCard(this.card);
-
     }
   };
 
   #handleClickMarkAsFavorite = () => {
-    if (this.card.user_details.favorite) {
-      this.card.user_details.favorite = 0;
-    } else {
-      this.card.user_details.favorite = 1;
-    }
+
+    this.card.user_details.favorite = !this.card.user_details.favorite;
+
     if (this.isPopupOpen === false) {
       this.updateCard(this.card);
     }
