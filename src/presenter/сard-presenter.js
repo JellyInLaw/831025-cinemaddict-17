@@ -3,6 +3,8 @@ import FilmCardView from '../view/film-card-view';
 import FilmDetailsView from '../view/film-details-view';
 import { comments } from '../mock/comments';
 
+const popupMode = {OPEN: 'open',CLOSE: 'close'};
+
 export default class CardPresenter {
   constructor (component,updateCard) {
     this.component = component;
@@ -11,7 +13,7 @@ export default class CardPresenter {
 
   #body = document.body;
   cardComponent = null;
-  isPopupOpen = false;
+  popupMode = popupMode.CLOSE;
 
   #getCardCommentsArr = (cardCommentsIds) => {
     const commentsArr = [];
@@ -45,7 +47,7 @@ export default class CardPresenter {
 
     render(this.filmDetailsView,this.#body);
 
-    this.isPopupOpen = true;
+    this.popupMode = popupMode.OPEN;
 
     this.filmDetailsView.setCloseClickHandler(this.#handleClickClosePopup);
     this.filmDetailsView.setClickWatchListHandler(this.#handleClickWatchList);
@@ -61,7 +63,7 @@ export default class CardPresenter {
 
   #handleClickClosePopup = () => {
     remove(this.filmDetailsView);
-    this.isPopupOpen = false;
+    this.popupMode = popupMode.CLOSE;
     this.#body.classList.remove('hide-overflow');
     document.removeEventListener('keydown',this.#onEscDown);
   };
@@ -70,10 +72,12 @@ export default class CardPresenter {
 
     this.card.user_details.watchlist = !this.card.user_details.watchlist;
 
-    if (this.isPopupOpen === false) {
+    if (this.popupMode === 'close') {
       this.updateCard(this.card);
     }
-    if (this.isPopupOpen === true) {
+
+    if (
+      this.popupMode === 'open') {
       this.#renderPopup();
       this.updateCard(this.card);
     }
@@ -83,10 +87,11 @@ export default class CardPresenter {
 
     this.card.user_details.already_watched = !this.card.user_details.already_watched;
 
-    if (this.isPopupOpen === false) {
+    if (
+      this.popupMode === 'close') {
       this.updateCard(this.card);
     }
-    if (this.isPopupOpen === true) {
+    if (this.popupMode === 'open') {
       this.#renderPopup();
       this.updateCard(this.card);
     }
@@ -96,10 +101,10 @@ export default class CardPresenter {
 
     this.card.user_details.favorite = !this.card.user_details.favorite;
 
-    if (this.isPopupOpen === false) {
+    if (this.popupMode === 'close') {
       this.updateCard(this.card);
     }
-    if (this.isPopupOpen === true) {
+    if (this.popupMode === 'open') {
       this.#renderPopup();
       this.updateCard(this.card);
     }
