@@ -127,4 +127,8 @@ export default class CardPresenter {
 
     remove(prevCardComponent);
   };
+
+  destroy = () => {
+    remove(this.cardComponent);
+  };
 }
