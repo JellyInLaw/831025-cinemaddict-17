@@ -70,14 +70,10 @@ export default class CardPresenter {
 
     this.card.user_details.watchlist = !this.card.user_details.watchlist;
 
-    if (this.popupMode === popupMode.CLOSE) {
-      this.updateCard(this.card);
-    }
+    this.updateCard(this.card);
 
-    if (
-      this.popupMode === popupMode.OPEN) {
+    if (this.popupMode === popupMode.OPEN) {
       this.#renderPopup();
-      this.updateCard(this.card);
     }
   };
 
@@ -85,13 +81,10 @@ export default class CardPresenter {
 
     this.card.user_details.already_watched = !this.card.user_details.already_watched;
 
-    if (
-      this.popupMode === popupMode.CLOSE) {
-      this.updateCard(this.card);
-    }
+    this.updateCard(this.card);
+
     if (this.popupMode === popupMode.OPEN) {
       this.#renderPopup();
-      this.updateCard(this.card);
     }
   };
 
@@ -99,12 +92,10 @@ export default class CardPresenter {
 
     this.card.user_details.favorite = !this.card.user_details.favorite;
 
-    if (this.popupMode === popupMode.CLOSE) {
-      this.updateCard(this.card);
-    }
+    this.updateCard(this.card);
+
     if (this.popupMode === popupMode.OPEN) {
       this.#renderPopup();
-      this.updateCard(this.card);
     }
   };
 
