@@ -3,7 +3,7 @@ import FilmCardView from '../view/film-card-view';
 import FilmDetailsView from '../view/film-details-view';
 import { comments } from '../mock/comments';
 
-const popupMode = {OPEN: 'open',CLOSE: 'close'};
+const PopupMode = {OPEN: 'open',CLOSE: 'close'};
 
 export default class CardPresenter {
   constructor (component,updateCard,popupModeChange) {
@@ -14,7 +14,7 @@ export default class CardPresenter {
 
   #body = document.body;
   cardComponent = null;
-  popupMode = popupMode.CLOSE;
+  popupMode = PopupMode.CLOSE;
 
   #getCardCommentsArr = (cardCommentsIds) => {
     const commentsArr = [];
@@ -34,10 +34,11 @@ export default class CardPresenter {
       remove(this.filmDetailsView);
       this.#body.classList.remove('hide-overflow');
       document.removeEventListener('keydown',this.#onEscDown);
+      this.popupMode = PopupMode.CLOSE;
     }
   };
 
-  #renderPopup = () => {
+  renderPopup = () => {
 
     this.popupModeChange();
 
@@ -45,7 +46,7 @@ export default class CardPresenter {
 
     render(this.filmDetailsView,this.#body);
 
-    this.popupMode = popupMode.OPEN;
+    this.popupMode = PopupMode.OPEN;
 
     this.filmDetailsView.setCloseClickHandler(this.#handleClickClosePopup);
     this.filmDetailsView.setClickWatchListHandler(this.#handleClickWatchList);
@@ -56,51 +57,33 @@ export default class CardPresenter {
   };
 
   #handleClickCard = () => {
-    this.#renderPopup();
+    this.renderPopup();
   };
 
   #handleClickClosePopup = () => {
     remove(this.filmDetailsView);
-    this.popupMode = popupMode.CLOSE;
+    this.popupMode = PopupMode.CLOSE;
     this.#body.classList.remove('hide-overflow');
     document.removeEventListener('keydown',this.#onEscDown);
   };
 
   #handleClickWatchList = () => {
-
     this.card.user_details.watchlist = !this.card.user_details.watchlist;
-
     this.updateCard(this.card);
-
-    if (this.popupMode === popupMode.OPEN) {
-      this.#renderPopup();
-    }
   };
 
   #handleClickIsWatched = () => {
-
     this.card.user_details.already_watched = !this.card.user_details.already_watched;
-
     this.updateCard(this.card);
-
-    if (this.popupMode === popupMode.OPEN) {
-      this.#renderPopup();
-    }
   };
 
   #handleClickMarkAsFavorite = () => {
-
     this.card.user_details.favorite = !this.card.user_details.favorite;
-
     this.updateCard(this.card);
-
-    if (this.popupMode === popupMode.OPEN) {
-      this.#renderPopup();
-    }
   };
 
   closePopup = () => {
-    if (this.popupMode !== popupMode.CLOSE) {
+    if (this.popupMode !== PopupMode.CLOSE) {
       remove(this.filmDetailsView);
     }
   };
@@ -124,6 +107,10 @@ export default class CardPresenter {
     this.cardComponent.setClickWatchListHandler(this.#handleClickWatchList);
     this.cardComponent.setClickIsWatchedHandler(this.#handleClickIsWatched);
     this.cardComponent.setClickMarkIsFavorite(this.#handleClickMarkAsFavorite);
+
+    if (this.popupMode === PopupMode.OPEN) {
+      this.renderPopup();
+    }
 
     remove(prevCardComponent);
   };
