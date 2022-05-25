@@ -2,8 +2,7 @@ import { render,remove, replace } from '../framework/render';
 import FilmCardView from '../view/film-card-view';
 import FilmDetailsView from '../view/film-details-view';
 import { comments } from '../mock/comments';
-
-const PopupMode = {OPEN: 'open',CLOSE: 'close'};
+import { PopupMode } from '../utils';
 
 export default class CardPresenter {
   constructor (component,updateCard,popupModeChange) {
@@ -31,10 +30,8 @@ export default class CardPresenter {
   #onEscDown = (evt) => {
     if (evt.key === 'Escape' || evt.key === 'Esc') {
       evt.preventDefault();
-      remove(this.filmDetailsView);
       this.#body.classList.remove('hide-overflow');
-      document.removeEventListener('keydown',this.#onEscDown);
-      this.popupMode = PopupMode.CLOSE;
+      this.closePopup();
     }
   };
 
@@ -54,6 +51,7 @@ export default class CardPresenter {
     this.filmDetailsView.setClickMarkIsFavorite(this.#handleClickMarkAsFavorite);
     this.#body.classList.add('hide-overflow');
     document.addEventListener('keydown',this.#onEscDown);
+
   };
 
   #handleClickCard = () => {
@@ -83,9 +81,9 @@ export default class CardPresenter {
   };
 
   closePopup = () => {
-    if (this.popupMode !== PopupMode.CLOSE) {
-      remove(this.filmDetailsView);
-    }
+    this.popupMode = PopupMode.CLOSE;
+    remove(this.filmDetailsView);
+    document.removeEventListener('keydown',this.#onEscDown);
   };
 
   init = (card) => {

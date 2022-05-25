@@ -51,8 +51,11 @@ export default class FilmsPresenter {
 
   handlePopupModeChange = () => {
     this.allCardPresenters.forEach((presenter) => {
-      presenter.closePopup();
-    });};
+      if (presenter.popupMode !== 'close') {
+        presenter.closePopup();
+      }
+    });
+  };
 
   // clearCardsList = () => {
   //   this.allCardPresenters.forEach((cardPresenter) => {cardPresenter.destroy();});

@@ -9,6 +9,8 @@ const getRandomInteger = (a = 0, b = 1) => {
 
 const humanizeDate = (date) => dayjs(date).format('D MMMM');
 
+const PopupMode = {OPEN: 'open',CLOSE: 'close'};
+
 // const SortType = {
 //   DEFAULT: 'default',
 //   DATE: 'date',
@@ -27,4 +29,4 @@ const humanizeDate = (date) => dayjs(date).format('D MMMM');
 
 // export {getRandomInteger, humanizeDate, SortType, sortByDate, sortByRating};
 
-export {getRandomInteger, humanizeDate};
+export {getRandomInteger, humanizeDate, PopupMode};
