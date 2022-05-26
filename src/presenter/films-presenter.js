@@ -4,7 +4,8 @@ import ListEmptyView from '../view/list-empty-view';
 import SortView from '../view/sort-view';
 import CardPresenter from './сard-presenter';
 import ShowMoreButtonView from '../view/show-more-button-view';
-// import { SortType,sortByDate, sortByRating} from '../utils';
+import { PopupMode } from '../utils';
+import { SortType,sortByDate, sortByRating} from '../utils';
 
 const FILMS_COUNT_PER_STEP = 5;
 
@@ -19,9 +20,9 @@ export default class FilmsPresenter {
   #showMoreButtonComponent = new ShowMoreButtonView();
   allCardPresenters = new Map();
   sortView = new SortView();
-  // currentSortType = SortType.DEFAULT;
-  // sourcedCards = [];
-  // sortedCards;
+  currentSortType = SortType.DEFAULT;
+  sourcedCards = [];
+  sortedCards;
 
   #getFilmsContainer = () => document.querySelector('.films-list__container');
 
@@ -51,71 +52,69 @@ export default class FilmsPresenter {
 
   handlePopupModeChange = () => {
     this.allCardPresenters.forEach((presenter) => {
-      if (presenter.popupMode !== 'close') {
+      if (presenter.popupMode !== PopupMode.CLOSE) {
         presenter.closePopup();
       }
     });
   };
 
-  // clearCardsList = () => {
-  //   this.allCardPresenters.forEach((cardPresenter) => {cardPresenter.destroy();});
-  // };
+  clearCardsList = () => {
+    this.allCardPresenters.forEach((cardPresenter) => {cardPresenter.destroy();});
+  };
 
-  // #handleSortTypeChange = (sortType) => {
-  //   if (this.currentSortType === sortType) {
-  //     return;
-  //   }
+  #handleSortTypeChange = (sortType) => {
+    if (this.currentSortType === sortType) {
+      return;
+    }
 
-  //   if (sortType === 'default') {
-  //     this.clearCardsList();
-  //     this.destroy();
-  //     this.cards = this.sourcedCards;
-  //     this.currentSortType = SortType.DEFAULT;
-  //     this.init();
-  //   }
+    if (sortType === SortType.DEFAULT) {
+      this.clearCardsList();
+      this.destroy();
+      this.cards = this.sourcedCards;
+      this.currentSortType = SortType.DEFAULT;
+      this.init();
+    }
 
-  //   if (sortType === 'date') {
-  //     const sortedCards = sortByDate(this.cards);
-  //     this.sortedCards = sortedCards;
-  //     this.clearCardsList();
-  //     this.destroy();
-  //     this.currentSortType = SortType.DATE;
-  //     this.init();
-  //   }
+    if (sortType === SortType.DATE) {
+      const sortedCards = sortByDate(this.cards);
+      this.sortedCards = sortedCards;
+      this.clearCardsList();
+      this.destroy();
+      this.currentSortType = SortType.DATE;
+      this.init();
+    }
 
-  //   if (sortType === 'rating') {
-  //     // console.log(this.cards);
-  //     const sortedCards = sortByRating(this.cards);
-  //     this.sortedCards = sortedCards;
-  //     this.clearCardsList();
-  //     this.destroy();
-  //     this.currentSortType = SortType.RATING;
-  //     this.init();
-  //   }
-  // };
+    if (sortType === SortType.RATING) {
+      const sortedCards = sortByRating(this.cards);
+      this.sortedCards = sortedCards;
+      this.clearCardsList();
+      this.destroy();
+      this.currentSortType = SortType.RATING;
+      this.init();
+    }
+  };
 
-  // renderSort = () => {
-  //   render(this.sortView,this.#main);
-  //   this.sortView.setSortTypeHandler(this.#handleSortTypeChange);
-  // };
+  renderSort = () => {
+    render(this.sortView,this.#main);
+    this.sortView.setSortTypeHandler(this.#handleSortTypeChange);
+  };
 
   init = () => {
 
-    // if (this.currentSortType === 'default') {
-    this.cards = [...this.cardModel.cards];
-    // }
+    if (this.currentSortType === SortType.DEFAULT) {
+      this.cards = [...this.cardModel.cards];
+    }
 
-    // if (this.currentSortType === 'date') {
-    // this.cards = this.sortedCards;
-    // }
+    if (this.currentSortType === SortType.DATE) {
+      this.cards = this.sortedCards;
+    }
 
-    // this.sourcedCards = [...this.cardModel.cards];
+    this.sourcedCards = [...this.cardModel.cards];
 
     if (this.cards.length === 0) {
       render(new ListEmptyView(),this.filmsContainer);
     } else {
-      // this.renderSort();
-      render(this.sortView,this.#main);
+      this.renderSort();
       this.filmsComponent = new FilmsView();
       render(this.filmsComponent,this.filmsContainer,RenderPosition.AFTEREND);
       const filmsComponent = this.#getFilmsContainer();
