@@ -58,17 +58,12 @@ export default class FilmsPresenter {
     });
   };
 
-  clearCardsList = () => {
-    this.allCardPresenters.forEach((cardPresenter) => {cardPresenter.destroy();});
-  };
-
   #handleSortTypeChange = (sortType) => {
     if (this.currentSortType === sortType) {
       return;
     }
 
     if (sortType === SortType.DEFAULT) {
-      this.clearCardsList();
       this.destroy();
       this.cards = this.sourcedCards;
       this.currentSortType = SortType.DEFAULT;
@@ -78,7 +73,6 @@ export default class FilmsPresenter {
     if (sortType === SortType.DATE) {
       const sortedCards = sortByDate(this.cards);
       this.sortedCards = sortedCards;
-      this.clearCardsList();
       this.destroy();
       this.currentSortType = SortType.DATE;
       this.init();
@@ -87,7 +81,6 @@ export default class FilmsPresenter {
     if (sortType === SortType.RATING) {
       const sortedCards = sortByRating(this.cards);
       this.sortedCards = sortedCards;
-      this.clearCardsList();
       this.destroy();
       this.currentSortType = SortType.RATING;
       this.init();
