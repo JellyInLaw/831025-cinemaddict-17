@@ -1,11 +1,10 @@
-import { remove, render } from '../framework/render';
-import FilmDetailsView from '../view/film-details-view';
-import FilmCardView from '../view/film-card-view';
+import { render,remove,RenderPosition} from '../framework/render';
 import FilmsView from '../view/films-view';
-import ShowMoreButtonView from '../view/show-more-button-view';
-import { comments } from '../mock/comments';
 import ListEmptyView from '../view/list-empty-view';
 import SortView from '../view/sort-view';
+import CardPresenter from './сard-presenter';
+import ShowMoreButtonView from '../view/show-more-button-view';
+// import { SortType,sortByDate, sortByRating} from '../utils';
 
 const FILMS_COUNT_PER_STEP = 5;
 
@@ -15,29 +14,23 @@ export default class FilmsPresenter {
     this.cardModel = cardModel;
   }
 
-  #showMoreButtonComponent = new ShowMoreButtonView();
-  #renderedFilmsCount = FILMS_COUNT_PER_STEP;
   #main = document.querySelector('.main');
-  #body = document.querySelector('.body');
-
-  #getCardCommentsArr = (cardCommentsIds) => {
-    const commentsArr = [];
-    for (const commentId of cardCommentsIds) {
-      for (const comment of comments) {
-        if (commentId === comment.id) {
-          commentsArr.push(comment);
-        }
-      }
-    }
-    return commentsArr;
-  };
+  #renderedFilmsCount;
+  #showMoreButtonComponent = new ShowMoreButtonView();
+  allCardPresenters = new Map();
+  sortView = new SortView();
+  // currentSortType = SortType.DEFAULT;
+  // sourcedCards = [];
+  // sortedCards;
 
   #getFilmsContainer = () => document.querySelector('.films-list__container');
 
   #handleShowMoreButtonClick = () => {
     this.cards
       .slice(this.#renderedFilmsCount,this.#renderedFilmsCount + FILMS_COUNT_PER_STEP)
-      .forEach((card) => this.#renderCard(card,this.#getFilmsContainer()));
+      .forEach((card) => {
+        this.renderCard(card,this.#getFilmsContainer());
+      });
 
     this.#renderedFilmsCount += FILMS_COUNT_PER_STEP;
 
@@ -46,66 +39,102 @@ export default class FilmsPresenter {
     }
   };
 
-
-  #renderCard = (card,component) => {
-
-    const cardComponent = new FilmCardView(card);
-    const cardCommentsIds = card.comments;
-    const commentsToRender = this.#getCardCommentsArr(cardCommentsIds);
-    const filmDetailsView = new FilmDetailsView(card,commentsToRender);
-
-    const onEscDown = (evt) => {
-      if (evt.key === 'Escape' || evt.key === 'Esc') {
-        evt.preventDefault();
-        remove(filmDetailsView);
-        this.#body.classList.remove('hide-overflow');
-        document.removeEventListener('keydown',onEscDown);
-      }
-    };
-
-    const handleClickCard = () => {
-      this.#body.classList.add('hide-overflow');
-      if (this.#body.querySelector('.film-details')) {
-        remove(filmDetailsView);
-      }
-      render(filmDetailsView,this.#body);
-      document.addEventListener('keydown',onEscDown);
-    };
-
-    const handleClickClosePopup = () => {
-      remove(filmDetailsView);
-      this.#body.classList.remove('hide-overflow');
-      document.removeEventListener('keydown',onEscDown);
-    };
-
-    render(cardComponent,component);
-
-    cardComponent.setClickHandler(handleClickCard);
-
-    filmDetailsView.setCloseClickHandler(handleClickClosePopup);
+  updateCard = (updatedCard) => {
+    this.allCardPresenters.get(updatedCard.id).init(updatedCard);
   };
+
+  renderCard = (card,component) => {
+    const cardPresenter = new CardPresenter(component,this.updateCard,this.handlePopupModeChange);
+    cardPresenter.init(card);
+    this.allCardPresenters.set(card.id,cardPresenter);
+  };
+
+  handlePopupModeChange = () => {
+    this.allCardPresenters.forEach((presenter) => {
+      if (presenter.popupMode !== 'close') {
+        presenter.closePopup();
+      }
+    });
+  };
+
+  // clearCardsList = () => {
+  //   this.allCardPresenters.forEach((cardPresenter) => {cardPresenter.destroy();});
+  // };
+
+  // #handleSortTypeChange = (sortType) => {
+  //   if (this.currentSortType === sortType) {
+  //     return;
+  //   }
+
+  //   if (sortType === 'default') {
+  //     this.clearCardsList();
+  //     this.destroy();
+  //     this.cards = this.sourcedCards;
+  //     this.currentSortType = SortType.DEFAULT;
+  //     this.init();
+  //   }
+
+  //   if (sortType === 'date') {
+  //     const sortedCards = sortByDate(this.cards);
+  //     this.sortedCards = sortedCards;
+  //     this.clearCardsList();
+  //     this.destroy();
+  //     this.currentSortType = SortType.DATE;
+  //     this.init();
+  //   }
+
+  //   if (sortType === 'rating') {
+  //     // console.log(this.cards);
+  //     const sortedCards = sortByRating(this.cards);
+  //     this.sortedCards = sortedCards;
+  //     this.clearCardsList();
+  //     this.destroy();
+  //     this.currentSortType = SortType.RATING;
+  //     this.init();
+  //   }
+  // };
+
+  // renderSort = () => {
+  //   render(this.sortView,this.#main);
+  //   this.sortView.setSortTypeHandler(this.#handleSortTypeChange);
+  // };
 
   init = () => {
 
+    // if (this.currentSortType === 'default') {
     this.cards = [...this.cardModel.cards];
+    // }
+
+    // if (this.currentSortType === 'date') {
+    // this.cards = this.sortedCards;
+    // }
+
+    // this.sourcedCards = [...this.cardModel.cards];
 
     if (this.cards.length === 0) {
       render(new ListEmptyView(),this.filmsContainer);
     } else {
-      render(new SortView(),this.#main);
-      render(new FilmsView(),this.filmsContainer);
+      // this.renderSort();
+      render(this.sortView,this.#main);
+      this.filmsComponent = new FilmsView();
+      render(this.filmsComponent,this.filmsContainer,RenderPosition.AFTEREND);
       const filmsComponent = this.#getFilmsContainer();
 
       for ( let i = 0 ; i < Math.min(this.cards.length,FILMS_COUNT_PER_STEP) ; i ++) {
-        this.#renderCard(this.cards[i],filmsComponent);
+        this.renderCard(this.cards[i],filmsComponent);
       }
 
       if (this.cards.length > FILMS_COUNT_PER_STEP) {
+        this.#renderedFilmsCount = FILMS_COUNT_PER_STEP;
         const placeForShowMoreButton = document.querySelector('.films-list');
         render(this.#showMoreButtonComponent,placeForShowMoreButton);
         this.#showMoreButtonComponent.setClickHandler(this.#handleShowMoreButtonClick);
       }
     }
+  };
 
+  destroy = () => {
+    remove(this.filmsComponent);
   };
 }
+
