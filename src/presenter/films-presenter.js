@@ -5,7 +5,7 @@ import SortView from '../view/sort-view';
 import CardPresenter from './сard-presenter';
 import ShowMoreButtonView from '../view/show-more-button-view';
 import { PopupMode } from '../utils';
-import { SortType,sortBy} from '../utils';
+import { SortType,SortBy} from '../utils';
 
 const FILMS_COUNT_PER_STEP = 5;
 
@@ -66,7 +66,7 @@ export default class FilmsPresenter {
       this.cards = this.sourcedCards;
     }
     if (sortType !== SortType.DEFAULT) {
-      const sort = sortBy[sortType];
+      const sort = SortBy[sortType];
       this.sortedCards = sort(this.cards);
     }
     this.destroy();

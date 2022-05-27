@@ -20,7 +20,7 @@ const SortType = {
   RATING:'rating'
 };
 
-const sortBy = {
+const SortBy = {
   [SortType.DATE]: (cards) => {
     const sortedCards = cards.sort((a,b) => (a.film_info.release.date < b.film_info.release.date));
     return sortedCards;
@@ -31,4 +31,4 @@ const sortBy = {
   }
 };
 
-export {getRandomInteger, humanizeDate, SortType, sortBy, PopupMode};
+export {getRandomInteger, humanizeDate, SortType, SortBy, PopupMode};
