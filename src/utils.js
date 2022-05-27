@@ -20,14 +20,15 @@ const SortType = {
   RATING:'rating'
 };
 
-const sortByDate = (cards) => {
-  const sortedCards = cards.sort((a,b) => (a.film_info.release.date < b.film_info.release.date));
-  return sortedCards;
+const sortBy = {
+  [SortType.DATE]: (cards) => {
+    const sortedCards = cards.sort((a,b) => (a.film_info.release.date < b.film_info.release.date));
+    return sortedCards;
+  },
+  [SortType.RATING]: (cards) => {
+    const sortedCards = cards.sort((a,b) => (a.film_info.total_rating < b.film_info.total_rating));
+    return sortedCards;
+  }
 };
 
-const sortByRating = (cards) => {
-  const sortedCards = cards.sort((a,b) => (a.film_info.total_rating < b.film_info.total_rating));
-  return sortedCards;
-};
-
-export {getRandomInteger, humanizeDate, SortType, sortByDate, sortByRating, PopupMode};
+export {getRandomInteger, humanizeDate, SortType, sortBy, PopupMode};

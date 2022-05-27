@@ -5,7 +5,7 @@ import SortView from '../view/sort-view';
 import CardPresenter from './сard-presenter';
 import ShowMoreButtonView from '../view/show-more-button-view';
 import { PopupMode } from '../utils';
-import { SortType,sortByDate, sortByRating} from '../utils';
+import { SortType,sortBy} from '../utils';
 
 const FILMS_COUNT_PER_STEP = 5;
 
@@ -62,29 +62,16 @@ export default class FilmsPresenter {
     if (this.currentSortType === sortType) {
       return;
     }
-
     if (sortType === SortType.DEFAULT) {
-      this.destroy();
       this.cards = this.sourcedCards;
-      this.currentSortType = SortType.DEFAULT;
-      this.init();
     }
-
-    if (sortType === SortType.DATE) {
-      const sortedCards = sortByDate(this.cards);
-      this.sortedCards = sortedCards;
-      this.destroy();
-      this.currentSortType = SortType.DATE;
-      this.init();
+    if (sortType !== SortType.DEFAULT) {
+      const sort = sortBy[sortType];
+      this.sortedCards = sort(this.cards);
     }
-
-    if (sortType === SortType.RATING) {
-      const sortedCards = sortByRating(this.cards);
-      this.sortedCards = sortedCards;
-      this.destroy();
-      this.currentSortType = SortType.RATING;
-      this.init();
-    }
+    this.destroy();
+    this.currentSortType = sortType;
+    this.init();
   };
 
   renderSort = () => {
