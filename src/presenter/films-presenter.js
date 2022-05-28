@@ -22,7 +22,7 @@ export default class FilmsPresenter {
   sortView = new SortView();
   currentSortType = SortType.DEFAULT;
   sourcedCards = [];
-  sortedCards;
+  sortedCards = [];
 
   #getFilmsContainer = () => document.querySelector('.films-list__container');
 
@@ -61,9 +61,6 @@ export default class FilmsPresenter {
   #handleSortTypeChange = (sortType) => {
     if (this.currentSortType === sortType) {
       return;
-    }
-    if (sortType === SortType.DEFAULT) {
-      this.cards = this.sourcedCards;
     }
     if (sortType !== SortType.DEFAULT) {
       const sort = SortBy[sortType];
