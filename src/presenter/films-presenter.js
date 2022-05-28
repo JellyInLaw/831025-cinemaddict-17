@@ -89,7 +89,7 @@ export default class FilmsPresenter {
     } else {
       this.renderSort();
       this.filmsComponent = new FilmsView();
-      render(this.filmsComponent,this.filmsContainer,RenderPosition.AFTEREND);
+      render(this.filmsComponent,this.filmsContainer,RenderPosition.BEFOREEND);
       const filmsComponent = this.#getFilmsContainer();
 
       for ( let i = 0 ; i < Math.min(this.cards.length,FILMS_COUNT_PER_STEP) ; i ++) {
