@@ -185,6 +185,11 @@ export default class FilmDetailsView extends AbstractView {
       .addEventListener('click',this.#clickIsFavoriteHandler);
   };
 
+  setScrollHandler = (callback) => {
+    this._callback.scrollHandler = callback;
+    this.element.addEventListener('scroll',this.#scrollHandler);
+  };
+
   #clickHandler = () => {
     this._callback.click();
   };
@@ -199,5 +204,9 @@ export default class FilmDetailsView extends AbstractView {
 
   #clickIsFavoriteHandler = () => {
     this._callback.clickIsFavorite();
+  };
+
+  #scrollHandler = () => {
+    this._callback.scrollHandler();
   };
 }
