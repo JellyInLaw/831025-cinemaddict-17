@@ -77,16 +77,12 @@ export default class FilmsPresenter {
   };
 
   init = () => {
+    this.cards = [...this.cardModel.cards];
+    this.sourcedCards = [...this.cardModel.cards];
 
-    if (this.currentSortType === SortType.DEFAULT) {
-      this.cards = [...this.cardModel.cards];
-    }
-
-    if (this.currentSortType === SortType.DATE) {
+    if (this.currentSortType !== SortType.DEFAULT) {
       this.cards = this.sortedCards;
     }
-
-    this.sourcedCards = [...this.cardModel.cards];
 
     if (this.cards.length === 0) {
       render(new ListEmptyView(),this.filmsContainer);
