@@ -14,7 +14,6 @@ export default class CardPresenter {
   #body = document.body;
   cardComponent = null;
   popupMode = PopupMode.CLOSE;
-  #popupScrollValue = 0;
 
   #getCardCommentsArr = (cardCommentsIds) => {
     const commentsArr = [];
@@ -36,10 +35,6 @@ export default class CardPresenter {
     }
   };
 
-  #scrollHandler = () => {
-    this.#popupScrollValue = this.filmDetailsView.element.scrollTop;
-  };
-
   renderPopup = () => {
     this.popupModeChange();
     this.filmDetailsView = new FilmDetailsView(this.card,this.commentsToRender);
@@ -49,7 +44,6 @@ export default class CardPresenter {
     this.filmDetailsView.setClickWatchListHandler(this.#handleClickWatchList);
     this.filmDetailsView.setClickIsWatchedHandler(this.#handleClickIsWatched);
     this.filmDetailsView.setClickMarkIsFavoriteHandler(this.#handleClickMarkAsFavorite);
-    this.filmDetailsView.setScrollHandler(this.#scrollHandler);
     this.#body.classList.add('hide-overflow');
     document.addEventListener('keydown',this.#onEscDown);
   };
@@ -108,7 +102,6 @@ export default class CardPresenter {
 
     if (this.popupMode === PopupMode.OPEN) {
       this.renderPopup();
-      this.filmDetailsView.element.scrollTo(0,this.#popupScrollValue);
     }
 
     remove(prevCardComponent);

@@ -150,15 +150,16 @@ export default class FilmDetailsView extends AbstractStatefulView {
   constructor (film,comments) {
     super();
     this._state = film;
-    this._state.commentsBodys = comments;
+    this._state.commentsBody = comments;
     this.#setInnerHandlers();
   }
 
   #body = document.body;
+  #popupScrollValue = 0;
   #checkedInputValue = 'smile';
 
   get template () {
-    return filmDetailsElement(this._state,this._state.commentsBodys);
+    return filmDetailsElement(this._state,this._state.commentsBody);
   }
 
   #emojiClickHandler = (evt) => {
@@ -183,7 +184,6 @@ export default class FilmDetailsView extends AbstractStatefulView {
   };
 
   #submitHandler = (evt) => {
-    evt.preventDefault();
     if (evt.code === 'Enter' && (evt.ctrlKey || evt.metaKey)) {
       const textArea = this.element.querySelector('.film-details__comment-input');
       const newComment = {
@@ -193,10 +193,15 @@ export default class FilmDetailsView extends AbstractStatefulView {
         date: new Date(),
         emotion: this.#checkedInputValue,
       };
-      this._state.commentsBodys.push(newComment);
+      this._state.commentsBody.push(newComment);
       this._state.comments.push(newComment.id);
       this.updateElement(this._state);
+      this.getScrollPopup();
     }
+  };
+
+  getScrollPopup = () => {
+    this.element.scrollTo(0,this.#popupScrollValue);
   };
 
   #setInnerHandlers = () => {
@@ -204,6 +209,11 @@ export default class FilmDetailsView extends AbstractStatefulView {
       .addEventListener('click',this.#emojiClickHandler);
     this.element.querySelector('.film-details__comment-input')
       .addEventListener('keydown',this.#submitHandler);
+    this.element.addEventListener('scroll',this.#scrollHandler);
+  };
+
+  #scrollHandler = () => {
+    this.#popupScrollValue = this.element.scrollTop;
   };
 
   _restoreHandlers = () => {
@@ -212,7 +222,6 @@ export default class FilmDetailsView extends AbstractStatefulView {
     this.setClickWatchListHandler(this._callback.clickWatchlist);
     this.setClickIsWatchedHandler(this._callback.clickIsWatched);
     this.setClickMarkIsFavoriteHandler(this._callback.clickIsFavorite);
-    this.setScrollHandler(this._callback.scrollHandler);
   };
 
   setCloseClickHandler = (callback) => {
@@ -243,11 +252,6 @@ export default class FilmDetailsView extends AbstractStatefulView {
       .addEventListener('click',this.#clickIsFavoriteHandler);
   };
 
-  setScrollHandler = (callback) => {
-    this._callback.scrollHandler = callback;
-    this.element.addEventListener('scroll',this.#scrollHandler);
-  };
-
   #closeClickHandler = () => {
     this._callback.closeClick();
   };
@@ -262,9 +266,5 @@ export default class FilmDetailsView extends AbstractStatefulView {
 
   #clickIsFavoriteHandler = () => {
     this._callback.clickIsFavorite();
-  };
-
-  #scrollHandler = () => {
-    this._callback.scrollHandler();
   };
 }
