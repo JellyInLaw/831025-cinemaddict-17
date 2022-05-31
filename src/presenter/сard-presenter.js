@@ -48,7 +48,7 @@ export default class CardPresenter {
     this.filmDetailsView.setCloseClickHandler(this.#handleClickClosePopup);
     this.filmDetailsView.setClickWatchListHandler(this.#handleClickWatchList);
     this.filmDetailsView.setClickIsWatchedHandler(this.#handleClickIsWatched);
-    this.filmDetailsView.setClickMarkIsFavorite(this.#handleClickMarkAsFavorite);
+    this.filmDetailsView.setClickMarkIsFavoriteHandler(this.#handleClickMarkAsFavorite);
     this.filmDetailsView.setScrollHandler(this.#scrollHandler);
     this.#body.classList.add('hide-overflow');
     document.addEventListener('keydown',this.#onEscDown);
