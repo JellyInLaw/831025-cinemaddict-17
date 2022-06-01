@@ -36,22 +36,16 @@ export default class CardPresenter {
   };
 
   renderPopup = () => {
-
     this.popupModeChange();
-
     this.filmDetailsView = new FilmDetailsView(this.card,this.commentsToRender);
-
     render(this.filmDetailsView,this.#body);
-
     this.popupMode = PopupMode.OPEN;
-
     this.filmDetailsView.setCloseClickHandler(this.#handleClickClosePopup);
     this.filmDetailsView.setClickWatchListHandler(this.#handleClickWatchList);
     this.filmDetailsView.setClickIsWatchedHandler(this.#handleClickIsWatched);
-    this.filmDetailsView.setClickMarkIsFavorite(this.#handleClickMarkAsFavorite);
+    this.filmDetailsView.setClickMarkIsFavoriteHandler(this.#handleClickMarkAsFavorite);
     this.#body.classList.add('hide-overflow');
     document.addEventListener('keydown',this.#onEscDown);
-
   };
 
   #handleClickCard = () => {

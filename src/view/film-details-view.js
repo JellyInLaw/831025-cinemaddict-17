@@ -1,4 +1,4 @@
-import AbstractView from '../framework/view/abstract-view';
+import AbstractStatefulView from '../framework/view/abstract-stateful-view';
 import dayjs from 'dayjs';
 
 const getDateForPopup = (date) => dayjs(date).format('DD MMMM YYYY');
@@ -10,7 +10,8 @@ const isActive = (active) =>
     ? 'film-details__control-button--active'
     :'';
 
-const getCommentTemplate = (comment) => `<li class="film-details__comment">
+const getCommentTemplate = (comment) => `
+          <li class="film-details__comment">
             <span class="film-details__comment-emoji">
               <img src="./images/emoji/${comment.emotion}.png" width="55" height="55" alt="emoji-smile">
             </span>
@@ -22,7 +23,8 @@ const getCommentTemplate = (comment) => `<li class="film-details__comment">
                 <button class="film-details__comment-delete">Delete</button>
               </p>
             </div>
-          </li>`;
+          </li>
+          `;
 
 const getComments = (comments) => {
   const arr = [];
@@ -110,7 +112,7 @@ const filmDetailsElement = (film,comments) =>`<section class="film-details">
 
         <div class="film-details__new-comment">
           <div class="film-details__add-emoji-label">
-            <img src="images/emoji/smile.png" width="55" height="55" alt="emoji-smile">
+            <img src="./images/emoji/smile.png" width="55" height="55" alt="emoji-smile">
           </div>
 
           <label class="film-details__comment-label">
@@ -144,24 +146,89 @@ const filmDetailsElement = (film,comments) =>`<section class="film-details">
   </form>
 </section>`;
 
-export default class FilmDetailsView extends AbstractView {
+export default class FilmDetailsView extends AbstractStatefulView {
   constructor (film,comments) {
     super();
-    this.film = film;
-    this.comments = comments;
+    this._state = film;
+    this._state.commentsBody = comments;
+    this.#setInnerHandlers();
   }
 
   #body = document.body;
+  #popupScrollValue = 0;
+  #checkedInputValue = 'smile';
 
   get template () {
-    return filmDetailsElement(this.film,this.comments);
+    return filmDetailsElement(this._state,this._state.commentsBody);
   }
 
+  #emojiClickHandler = (evt) => {
+    if (evt.target.tagName !== 'IMG') {
+      return;
+    }
+    const emoji = this.element.querySelector('.film-details__add-emoji-label > IMG');
+    emoji.src = evt.target.getAttribute('src');
+    emoji.alt = evt.target.parentNode.getAttribute('for');
+    const inputs = this.element.querySelectorAll('.film-details__emoji-item');
+    inputs.forEach((input) => {
+      if (input.checked) {
+        input.removeAttribute('checked');
+      }
+    });
+    inputs.forEach((input) => {
+      if (input.id === emoji.alt) {
+        input.setAttribute('checked','');
+        this.#checkedInputValue = input.value;
+      }
+    });
+  };
+
+  #submitHandler = (evt) => {
+    if (evt.code === 'Enter' && (evt.ctrlKey || evt.metaKey)) {
+      const textArea = this.element.querySelector('.film-details__comment-input');
+      const newComment = {
+        id:'42',
+        author: 'Ilya O\'Reilly',
+        comment: textArea.value,
+        date: new Date(),
+        emotion: this.#checkedInputValue,
+      };
+      this._state.commentsBody.push(newComment);
+      this._state.comments.push(newComment.id);
+      this.updateElement(this._state);
+      this.getScrollPopup();
+    }
+  };
+
+  getScrollPopup = () => {
+    this.element.scrollTo(0,this.#popupScrollValue);
+  };
+
+  #setInnerHandlers = () => {
+    this.element.querySelector('.film-details__emoji-list')
+      .addEventListener('click',this.#emojiClickHandler);
+    this.element.querySelector('.film-details__comment-input')
+      .addEventListener('keydown',this.#submitHandler);
+    this.element.addEventListener('scroll',this.#scrollHandler);
+  };
+
+  #scrollHandler = () => {
+    this.#popupScrollValue = this.element.scrollTop;
+  };
+
+  _restoreHandlers = () => {
+    this.#setInnerHandlers();
+    this.setCloseClickHandler(this._callback.closeClick);
+    this.setClickWatchListHandler(this._callback.clickWatchlist);
+    this.setClickIsWatchedHandler(this._callback.clickIsWatched);
+    this.setClickMarkIsFavoriteHandler(this._callback.clickIsFavorite);
+  };
+
   setCloseClickHandler = (callback) => {
-    this._callback.click = callback;
+    this._callback.closeClick = callback;
     this.element
       .querySelector('.film-details__close-btn')
-      .addEventListener('click', this.#clickHandler);
+      .addEventListener('click', this.#closeClickHandler);
   };
 
   setClickWatchListHandler = (callback) => {
@@ -178,15 +245,15 @@ export default class FilmDetailsView extends AbstractView {
       .addEventListener('click',this.#clickIsWatchedHandler);
   };
 
-  setClickMarkIsFavorite = (callback) => {
+  setClickMarkIsFavoriteHandler = (callback) => {
     this._callback.clickIsFavorite = callback;
     this.element
       .querySelector('.film-details__control-button--favorite')
       .addEventListener('click',this.#clickIsFavoriteHandler);
   };
 
-  #clickHandler = () => {
-    this._callback.click();
+  #closeClickHandler = () => {
+    this._callback.closeClick();
   };
 
   #clickWatchlistHandler = () => {

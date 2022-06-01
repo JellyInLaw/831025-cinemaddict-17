@@ -22,7 +22,7 @@ export default class FilmsPresenter {
   sortView = new SortView();
   currentSortType = SortType.DEFAULT;
   sourcedCards = [];
-  sortedCards;
+  sortedCards = [];
 
   #getFilmsContainer = () => document.querySelector('.films-list__container');
 
@@ -62,9 +62,6 @@ export default class FilmsPresenter {
     if (this.currentSortType === sortType) {
       return;
     }
-    if (sortType === SortType.DEFAULT) {
-      this.cards = this.sourcedCards;
-    }
     if (sortType !== SortType.DEFAULT) {
       const sort = SortBy[sortType];
       this.sortedCards = sort(this.cards);
@@ -80,23 +77,19 @@ export default class FilmsPresenter {
   };
 
   init = () => {
+    this.cards = [...this.cardModel.cards];
+    this.sourcedCards = [...this.cardModel.cards];
 
-    if (this.currentSortType === SortType.DEFAULT) {
-      this.cards = [...this.cardModel.cards];
-    }
-
-    if (this.currentSortType === SortType.DATE) {
+    if (this.currentSortType !== SortType.DEFAULT) {
       this.cards = this.sortedCards;
     }
-
-    this.sourcedCards = [...this.cardModel.cards];
 
     if (this.cards.length === 0) {
       render(new ListEmptyView(),this.filmsContainer);
     } else {
       this.renderSort();
       this.filmsComponent = new FilmsView();
-      render(this.filmsComponent,this.filmsContainer,RenderPosition.AFTEREND);
+      render(this.filmsComponent,this.filmsContainer,RenderPosition.BEFOREEND);
       const filmsComponent = this.#getFilmsContainer();
 
       for ( let i = 0 ; i < Math.min(this.cards.length,FILMS_COUNT_PER_STEP) ; i ++) {
