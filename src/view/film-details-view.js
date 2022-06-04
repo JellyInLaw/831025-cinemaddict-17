@@ -116,7 +116,7 @@ const filmDetailsElement = (film,comments) =>`<section class="film-details">
           </div>
 
           <label class="film-details__comment-label">
-            <textarea class="film-details__comment-input" placeholder="Select reaction below and write comment here" name="comment">Great movie!</textarea>
+            <textarea class="film-details__comment-input" placeholder="Select reaction below and write comment here" name="comment"></textarea>
           </label>
 
           <div class="film-details__emoji-list">
@@ -160,6 +160,7 @@ export default class FilmDetailsView extends AbstractStatefulView {
 
   get template () {
     return filmDetailsElement(this._state,this._state.commentsBody);
+
   }
 
   #emojiClickHandler = (evt) => {
