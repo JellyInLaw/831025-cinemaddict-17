@@ -3,6 +3,7 @@ import FilmCardView from '../view/film-card-view';
 import FilmDetailsView from '../view/film-details-view';
 import { comments } from '../mock/comments';
 import { PopupMode } from '../utils';
+import dayjs from 'dayjs';
 
 export default class CardPresenter {
   constructor (component,updateCard,popupModeChange) {

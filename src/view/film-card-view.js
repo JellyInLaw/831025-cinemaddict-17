@@ -5,7 +5,7 @@ const createCardTemplate = (film) => {
   const title = film.film_info.title;
   const totalRating = film.film_info.total_rating;
   const releaseDate = dayjs(film.film_info.release.date).format('YYYY');
-  const runtime = film.film_info.runtime;
+  const runtime = film.film_info.runtime > 60 ? `${Math.floor(film.film_info.runtime/60)}h ${film.film_info.runtime % 60}m`: `${film.film_info.runtime}m`;
   const genre = film.film_info.genre;
   const poster = film.film_info.poster;
   const description = film.film_info.description;
@@ -20,7 +20,7 @@ const createCardTemplate = (film) => {
     <p class="film-card__rating">${totalRating}</p>
     <p class="film-card__info">
       <span class="film-card__year">${releaseDate}</span>
-      <span class="film-card__duration">${runtime}m</span>
+      <span class="film-card__duration">${runtime}</span>
       <span class="film-card__genre">${genre}</span>
     </p>
     <img src="./${poster}" alt="" class="film-card__poster">
