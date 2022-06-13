@@ -15,6 +15,10 @@ export default class FilmsPresenter {
     this.cardModel = cardModel;
   }
 
+  get films () {
+    return this.cardModel.cards;
+  }
+
   #main = document.querySelector('.main');
   #renderedFilmsCount;
   #showMoreButtonComponent = new ShowMoreButtonView();
