@@ -15,10 +15,6 @@ export default class FilmsPresenter {
     this.cardModel = cardModel;
   }
 
-  get films () {
-    return this.cardModel.cards;
-  }
-
   #main = document.querySelector('.main');
   #renderedFilmsCount;
   #showMoreButtonComponent = new ShowMoreButtonView();
@@ -27,6 +23,10 @@ export default class FilmsPresenter {
   currentSortType = SortType.DEFAULT;
   sourcedCards = [];
   sortedCards = [];
+
+  get films () {
+    return this.cardModel.cards;
+  }
 
   #getFilmsContainer = () => document.querySelector('.films-list__container');
 

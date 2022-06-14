@@ -1,9 +1,8 @@
 import { render,remove, replace } from '../framework/render';
 import FilmCardView from '../view/film-card-view';
 import FilmDetailsView from '../view/film-details-view';
-import { comments } from '../mock/comments';
+import CommentsModel from '../model/comments-model';
 import { PopupMode } from '../utils';
-import dayjs from 'dayjs';
 
 export default class CardPresenter {
   constructor (component,updateCard,popupModeChange) {
@@ -13,13 +12,14 @@ export default class CardPresenter {
   }
 
   #body = document.body;
+  #comments = new CommentsModel().comments;
   cardComponent = null;
   popupMode = PopupMode.CLOSE;
 
   #getCardCommentsArr = (cardCommentsIds) => {
     const commentsArr = [];
     for (const commentId of cardCommentsIds) {
-      for (const comment of comments) {
+      for (const comment of this.#comments) {
         if (commentId === comment.id) {
           commentsArr.push(comment);
         }

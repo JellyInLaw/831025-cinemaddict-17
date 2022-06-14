@@ -31,6 +31,4 @@ const getComments = (countComments) => {
   return arr;
 };
 
-const comments = getComments(100);
-
-export {comments};
+export {getComments};
