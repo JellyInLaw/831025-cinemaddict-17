@@ -5,21 +5,22 @@ import CommentsModel from '../model/comments-model';
 import { PopupMode } from '../utils';
 
 export default class CardPresenter {
-  constructor (component,updateCard,popupModeChange) {
+  constructor (component,updateCard,popupModeChange,comments) {
     this.component = component;
     this.updateCard = updateCard;
     this.popupModeChange = popupModeChange;
+    this.comments = comments;
   }
 
-  #body = document.body;
-  #comments = new CommentsModel().comments;
+
   cardComponent = null;
   popupMode = PopupMode.CLOSE;
 
   #getCardCommentsArr = (cardCommentsIds) => {
+    console.log(this.comments);
     const commentsArr = [];
     for (const commentId of cardCommentsIds) {
-      for (const comment of this.#comments) {
+      for (const comment of this.comments) {
         if (commentId === comment.id) {
           commentsArr.push(comment);
         }

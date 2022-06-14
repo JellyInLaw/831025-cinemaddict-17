@@ -6,6 +6,7 @@ import CardPresenter from './сard-presenter';
 import ShowMoreButtonView from '../view/show-more-button-view';
 import { PopupMode } from '../utils';
 import { SortType,SortBy} from '../utils';
+import CommentsModel from '../model/comments-model';
 
 const FILMS_COUNT_PER_STEP = 5;
 
@@ -13,6 +14,7 @@ export default class FilmsPresenter {
   constructor (filmsContainer,cardModel) {
     this.filmsContainer = filmsContainer;
     this.cardModel = cardModel;
+    this.comments = new CommentsModel().comments;
   }
 
   #main = document.querySelector('.main');
@@ -49,7 +51,7 @@ export default class FilmsPresenter {
   };
 
   renderCard = (card,component) => {
-    const cardPresenter = new CardPresenter(component,this.updateCard,this.handlePopupModeChange);
+    const cardPresenter = new CardPresenter(component,this.updateCard,this.handlePopupModeChange,this.comments);
     cardPresenter.init(card);
     this.allCardPresenters.set(card.id,cardPresenter);
   };
