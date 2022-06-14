@@ -1,7 +1,7 @@
 import { render,remove, replace } from '../framework/render';
 import FilmCardView from '../view/film-card-view';
 import FilmDetailsView from '../view/film-details-view';
-import CommentsModel from '../model/comments-model';
+// import CommentsModel from '../model/comments-model';
 import { PopupMode } from '../utils';
 
 export default class CardPresenter {
@@ -12,7 +12,7 @@ export default class CardPresenter {
     this.comments = comments;
   }
 
-
+  #body = document.body;
   cardComponent = null;
   popupMode = PopupMode.CLOSE;
 
