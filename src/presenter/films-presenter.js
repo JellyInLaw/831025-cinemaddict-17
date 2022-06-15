@@ -4,8 +4,8 @@ import ListEmptyView from '../view/list-empty-view';
 import SortView from '../view/sort-view';
 import CardPresenter from './сard-presenter';
 import ShowMoreButtonView from '../view/show-more-button-view';
-import { PopupMode } from '../utils';
-import { SortType,SortBy} from '../utils';
+import { PopupMode, UpdateType, UserAction } from '../utils';
+import { SortType,SortBy } from '../utils';
 import CommentsModel from '../model/comments-model';
 
 const FILMS_COUNT_PER_STEP = 5;
@@ -23,6 +23,7 @@ export default class FilmsPresenter {
   #showMoreButtonComponent = new ShowMoreButtonView();
   allCardPresenters = new Map();
   sortView = new SortView();
+  listEmptyView = new ListEmptyView();
   currentSortType = SortType.DEFAULT;
   sourcedCards = [];
   sortedCards = [];
@@ -31,12 +32,41 @@ export default class FilmsPresenter {
     return this.cardModel.cards;
   }
 
+  #clearList = () => {
+    const filmsCount = this.cards.length;
+    this.allCardPresenters.forEach((presenter) => {presenter.destroy();});
+    remove(this.sortView);
+    remove(this.listEmptyView);
+    remove(this.#showMoreButtonComponent);
+  };
+
   #handleViewAction = (actionType, updateType, update) => {
-    console.log(actionType, updateType, update);
+    switch (actionType) {
+      case UserAction.UPDATE_CARD:
+        this.cardModel.updateCard(updateType,update);
+        this.#clearList();
+        break;
+      case UserAction.ADD_COMMENT:
+        this.comments.updateComments(updateType,update);
+        break;
+      case UserAction.DELETE_COMMENT:
+        this.comments.updateComments(updateType,update);
+        break;
+    }
   };
 
   #handleModelEvent = (updateType, data) => {
-    console.log(updateType, data);
+    switch (updateType) {
+      case UpdateType.PATCH:
+        this.cardPresenter.get(data.id).init(data);
+        break;
+      case UpdateType.MINOR:
+        //
+        break;
+      case UpdateType.MAJOR:
+        //
+        break;
+    }
   };
 
   #getFilmsContainer = () => document.querySelector('.films-list__container');
@@ -100,7 +130,7 @@ export default class FilmsPresenter {
     }
 
     if (this.cards.length === 0) {
-      render(new ListEmptyView(),this.filmsContainer);
+      render(this.listEmptyView,this.filmsContainer);
     } else {
       this.renderSort();
       this.filmsComponent = new FilmsView();

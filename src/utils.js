@@ -22,8 +22,8 @@ const SortType = {
 
 const UserAction = {
   UPDATE_CARD: 'UPDATE_CARD',
-  ADD_TASK: 'ADD_TASK',
-  DELETE_TASK: 'DELETE_TASK',
+  ADD_COMMENT: 'ADD_COMMENT',
+  DELETE_COMMENT: 'DELETE_COMMENT',
 };
 
 const UpdateType = {
