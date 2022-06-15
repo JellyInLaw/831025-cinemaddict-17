@@ -1,8 +1,7 @@
 import { render,remove, replace } from '../framework/render';
 import FilmCardView from '../view/film-card-view';
 import FilmDetailsView from '../view/film-details-view';
-// import CommentsModel from '../model/comments-model';
-import { PopupMode } from '../utils';
+import { PopupMode, UpdateType, UserAction } from '../utils';
 
 export default class CardPresenter {
   constructor (component,updateCard,popupModeChange,comments) {
@@ -17,7 +16,6 @@ export default class CardPresenter {
   popupMode = PopupMode.CLOSE;
 
   #getCardCommentsArr = (cardCommentsIds) => {
-    console.log(this.comments);
     const commentsArr = [];
     for (const commentId of cardCommentsIds) {
       for (const comment of this.comments) {
@@ -62,18 +60,36 @@ export default class CardPresenter {
   };
 
   #handleClickWatchList = () => {
+    // this.card.user_details.watchlist = !this.card.user_details.watchlist;
+    // this.updateCard(this.card);
     this.card.user_details.watchlist = !this.card.user_details.watchlist;
-    this.updateCard(this.card);
+    this.updateCard(
+      UserAction.UPDATE_CARD,
+      UpdateType.MINOR,
+      this.card
+    );
   };
 
   #handleClickIsWatched = () => {
+    // this.card.user_details.already_watched = !this.card.user_details.already_watched;
+    // this.updateCard(this.card);
     this.card.user_details.already_watched = !this.card.user_details.already_watched;
-    this.updateCard(this.card);
+    this.updateCard(
+      UserAction.UPDATE_CARD,
+      UpdateType.MINOR,
+      this.card
+    );
   };
 
   #handleClickMarkAsFavorite = () => {
+    // this.card.user_details.favorite = !this.card.user_details.favorite;
+    // this.updateCard(this.card);
     this.card.user_details.favorite = !this.card.user_details.favorite;
-    this.updateCard(this.card);
+    this.updateCard(
+      UserAction.UPDATE_CARD,
+      UpdateType.MINOR,
+      this.card
+    );
   };
 
   closePopup = () => {

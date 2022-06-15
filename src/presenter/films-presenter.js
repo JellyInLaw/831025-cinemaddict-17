@@ -15,6 +15,7 @@ export default class FilmsPresenter {
     this.filmsContainer = filmsContainer;
     this.cardModel = cardModel;
     this.comments = new CommentsModel().comments;
+    this.cardModel.addObserver(this.#handleModelEvent);
   }
 
   #main = document.querySelector('.main');
@@ -29,6 +30,14 @@ export default class FilmsPresenter {
   get films () {
     return this.cardModel.cards;
   }
+
+  #handleViewAction = (actionType, updateType, update) => {
+    console.log(actionType, updateType, update);
+  };
+
+  #handleModelEvent = (updateType, data) => {
+    console.log(updateType, data);
+  };
 
   #getFilmsContainer = () => document.querySelector('.films-list__container');
 
@@ -51,7 +60,7 @@ export default class FilmsPresenter {
   };
 
   renderCard = (card,component) => {
-    const cardPresenter = new CardPresenter(component,this.updateCard,this.handlePopupModeChange,this.comments);
+    const cardPresenter = new CardPresenter(component,this.#handleViewAction,this.handlePopupModeChange,this.comments);
     cardPresenter.init(card);
     this.allCardPresenters.set(card.id,cardPresenter);
   };

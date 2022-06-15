@@ -20,6 +20,18 @@ const SortType = {
   RATING:'rating'
 };
 
+const UserAction = {
+  UPDATE_CARD: 'UPDATE_CARD',
+  ADD_TASK: 'ADD_TASK',
+  DELETE_TASK: 'DELETE_TASK',
+};
+
+const UpdateType = {
+  PATCH: 'PATCH',
+  MINOR: 'MINOR',
+  MAJOR: 'MAJOR',
+};
+
 const SortBy = {
   [SortType.DATE]: (cards) => {
     const sortedCards = cards.sort((a,b) => (a.film_info.release.date < b.film_info.release.date));
@@ -31,4 +43,4 @@ const SortBy = {
   }
 };
 
-export {getRandomInteger, humanizeDate, SortType, SortBy, PopupMode};
+export {getRandomInteger, humanizeDate, SortType, SortBy, PopupMode, UserAction, UpdateType};
