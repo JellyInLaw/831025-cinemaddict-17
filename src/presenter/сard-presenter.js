@@ -60,34 +60,28 @@ export default class CardPresenter {
   };
 
   #handleClickWatchList = () => {
-    // this.card.user_details.watchlist = !this.card.user_details.watchlist;
-    // this.updateCard(this.card);
     this.card.user_details.watchlist = !this.card.user_details.watchlist;
     this.updateCard(
       UserAction.UPDATE_CARD,
-      UpdateType.MINOR,
+      UpdateType.PATCH,
       this.card
     );
   };
 
   #handleClickIsWatched = () => {
-    // this.card.user_details.already_watched = !this.card.user_details.already_watched;
-    // this.updateCard(this.card);
     this.card.user_details.already_watched = !this.card.user_details.already_watched;
     this.updateCard(
       UserAction.UPDATE_CARD,
-      UpdateType.MINOR,
+      UpdateType.PATCH,
       this.card
     );
   };
 
   #handleClickMarkAsFavorite = () => {
-    // this.card.user_details.favorite = !this.card.user_details.favorite;
-    // this.updateCard(this.card);
     this.card.user_details.favorite = !this.card.user_details.favorite;
     this.updateCard(
       UserAction.UPDATE_CARD,
-      UpdateType.MINOR,
+      UpdateType.PATCH,
       this.card
     );
   };

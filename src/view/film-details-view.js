@@ -1,5 +1,6 @@
 import AbstractStatefulView from '../framework/view/abstract-stateful-view';
 import dayjs from 'dayjs';
+import { getRandomInteger } from '../utils';
 
 const getDateForPopup = (date) => dayjs(date).format('DD MMMM YYYY');
 
@@ -188,7 +189,7 @@ export default class FilmDetailsView extends AbstractStatefulView {
     if (evt.code === 'Enter' && (evt.ctrlKey || evt.metaKey)) {
       const textArea = this.element.querySelector('.film-details__comment-input');
       const newComment = {
-        id:'42',
+        id:getRandomInteger(1,9999),
         author: 'Ilya O\'Reilly',
         comment: textArea.value,
         date: new Date(),

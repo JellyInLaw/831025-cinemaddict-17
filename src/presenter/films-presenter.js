@@ -44,7 +44,6 @@ export default class FilmsPresenter {
     switch (actionType) {
       case UserAction.UPDATE_CARD:
         this.cardModel.updateCard(updateType,update);
-        this.#clearList();
         break;
       case UserAction.ADD_COMMENT:
         this.comments.updateComments(updateType,update);
@@ -58,7 +57,7 @@ export default class FilmsPresenter {
   #handleModelEvent = (updateType, data) => {
     switch (updateType) {
       case UpdateType.PATCH:
-        this.cardPresenter.get(data.id).init(data);
+        this.allCardPresenters.get(data.id).init(data);
         break;
       case UpdateType.MINOR:
         //

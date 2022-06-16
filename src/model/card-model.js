@@ -12,7 +12,7 @@ export default class CardModel extends Observable {
     const index = this.#cards.findIndex((card) => card.id === update.id);
 
     if (index === -1) {
-      throw new Error('Can\'t update unexisting task');
+      throw new Error('Can\'t update unexisting card');
     }
 
     this.#cards = [
