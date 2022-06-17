@@ -30,6 +30,7 @@ export default class CommentsModel extends Observable {
     ];
 
     this._notify(updateType, update);
+    // console.log(this.#comments);
   };
 
   deleteComment = (updateType, update) => {

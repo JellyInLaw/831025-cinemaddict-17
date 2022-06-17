@@ -14,8 +14,10 @@ export default class FilmsPresenter {
   constructor (filmsContainer,cardModel) {
     this.filmsContainer = filmsContainer;
     this.cardModel = cardModel;
-    this.comments = new CommentsModel().comments;
+    this.commentsModel = new CommentsModel();
+    this.comments = this.commentsModel.comments;
     this.cardModel.addObserver(this.#handleModelEvent);
+    this.commentsModel.addObserver(this.#handleModelEvent);
   }
 
   #main = document.querySelector('.main');
@@ -46,7 +48,7 @@ export default class FilmsPresenter {
         this.cardModel.updateCard(updateType,update);
         break;
       case UserAction.ADD_COMMENT:
-        this.comments.updateComments(updateType,update);
+        this.commentsModel.addComment(updateType,update);
         break;
       case UserAction.DELETE_COMMENT:
         this.comments.updateComments(updateType,update);

@@ -1,6 +1,6 @@
 import AbstractStatefulView from '../framework/view/abstract-stateful-view';
 import dayjs from 'dayjs';
-import { getRandomInteger } from '../utils';
+import { getRandomInteger,UserAction,UpdateType} from '../utils';
 
 const getDateForPopup = (date) => dayjs(date).format('DD MMMM YYYY');
 
@@ -148,11 +148,12 @@ const filmDetailsElement = (film,comments) =>`<section class="film-details">
 </section>`;
 
 export default class FilmDetailsView extends AbstractStatefulView {
-  constructor (film,comments) {
+  constructor (film,comments,updateComments) {
     super();
     this._state = film;
     this._state.commentsBody = comments;
     this.#setInnerHandlers();
+    this.updateComments = updateComments;
   }
 
   #body = document.body;
@@ -161,7 +162,6 @@ export default class FilmDetailsView extends AbstractStatefulView {
 
   get template () {
     return filmDetailsElement(this._state,this._state.commentsBody);
-
   }
 
   #emojiClickHandler = (evt) => {
@@ -197,6 +197,11 @@ export default class FilmDetailsView extends AbstractStatefulView {
       };
       this._state.commentsBody.push(newComment);
       this._state.comments.push(newComment.id);
+      this.updateComments(
+        UserAction.ADD_COMMENT,
+        UpdateType.PATCH,
+        newComment
+      );
       this.updateElement(this._state);
       this.getScrollPopup();
     }

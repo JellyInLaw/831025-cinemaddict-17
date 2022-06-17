@@ -7,6 +7,7 @@ export default class CardPresenter {
   constructor (component,updateCard,popupModeChange,comments) {
     this.component = component;
     this.updateCard = updateCard;
+    this.updateComments = updateCard;
     this.popupModeChange = popupModeChange;
     this.comments = comments;
   }
@@ -16,6 +17,7 @@ export default class CardPresenter {
   popupMode = PopupMode.CLOSE;
 
   #getCardCommentsArr = (cardCommentsIds) => {
+    // console.log(cardCommentsIds);
     const commentsArr = [];
     for (const commentId of cardCommentsIds) {
       for (const comment of this.comments) {
@@ -37,7 +39,7 @@ export default class CardPresenter {
 
   renderPopup = () => {
     this.popupModeChange();
-    this.filmDetailsView = new FilmDetailsView(this.card,this.commentsToRender);
+    this.filmDetailsView = new FilmDetailsView(this.card,this.commentsToRender,this.updateComments);
     render(this.filmDetailsView,this.#body);
     this.popupMode = PopupMode.OPEN;
     this.filmDetailsView.setCloseClickHandler(this.#handleClickClosePopup);
